@@ -10,23 +10,23 @@ body {
   background-image: linear-gradient(to bottom right, #d9f2ff, #a7dbf7, #78c4f4);
 }
 
-.main {
+/* .main {
   display: flex;
   justify-content: center;
   align-items: center;
   background-image: linear-gradient(to bottom right, #87ceeb, #ff69b4, #00ff7f);
   height: 100vh;
   width: 100%;
-}
+} */
 
-.location-tooltip {
+/* .location-tooltip {
   position: absolute;
   top: 5;
   left: 200px;
   pointer-events: none;
-}
+} */
 
-.section {
+/* .section {
   max-width: 500px;
   padding: 4px;
   display: flex;
@@ -41,9 +41,9 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #f2f5f7;
-}
+} */
 
-h1 {
+/* h1 {
   font-size: 3xl;
   font-weight: bold;
   margin-bottom: 4px;
@@ -86,7 +86,7 @@ h2 {
 
 .forecast-item img {
   margin-top: 16px;
-}
+} */
 
 /* Light Mode */
 .light-mode {
@@ -98,4 +98,59 @@ h2 {
 .dark-mode {
   background-color: #333;
   color: #fff;
+}
+
+.search-bar {
+  width: 300px; /* Adjust the width as per your requirement */
+  border-radius: 20px; /* Adjust the border-radius as per your requirement */
+  transform: scaleY(1.2); /* Adjust the scale factor as per your requirement */
+  transform-origin: top; /* Set the transform origin to the top */
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1{
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.location-button {
+  width: 30px;
+  border-radius: 0 20px 20px 0; /* Rounded on the right side */
+  transform: scaleY(1.2);
+  transform-origin: top;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-left: -4px; /* Add negative margin to overlap border */
+  /* Add styles for normal state */
+}
+
+/* Attach buttons to each other */
+.search-click {
+  margin-right: 2px; /* Adjust the margin as needed */
+}
+
+.location-button:hover {
+  /* Add styles for hover state */
+  /* For example, change the background color */
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+
+.search-click {
+  border-radius: 20px 0 0 20px; /* Rounded on the left side */
+  transform: scaleY(1.2);
+  transform-origin: top;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  /* Add styles for normal state */
+}
+
+
+.search-click:hover {
+  /* Add styles for hover state */
+  /* For example, change the background color */
+  background-color: lightgray;
+  cursor: pointer;
 }

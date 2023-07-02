@@ -93,9 +93,9 @@ async function fetchWeatherByZIPCode(zipCode: string) {
   }
 }
 
-export default {
+export {
   fetchWeatherByAddress,
   fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
-};
+}; 

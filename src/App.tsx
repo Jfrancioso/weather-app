@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import ForecastItem from './components/ForecastItem';
 import ErrorModal from './components/ErrorModal';
 import SearchForm from './components/SearchForm';
-import WeatherService from './services/WeatherService';
-
-const [darkMode, setDarkMode] = useState(false);
+import {
+  fetchWeatherByAddress,
+  fetchWeatherByCoordinates,
+  fetchWeatherByLocation,
+  fetchWeatherByZIPCode,
+} from './services/WeatherService';
+import './index.css'; 
+import './tailwind.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
 
 export type ForecastItemType = {
@@ -23,6 +30,7 @@ const App: React.FC = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [locationTitle, setLocationTitle] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if ('permissions' in navigator) {
@@ -35,11 +43,11 @@ const App: React.FC = () => {
   const handleSearch = async (address: string) => {
     try {
       setLoading(true);
-      const geocodeData = await WeatherService.fetchWeatherByAddress(address);
+      const geocodeData = await fetchWeatherByAddress(address);
 
       if (geocodeData.result.addressMatches[0]) {
         const coordinates = geocodeData.result.addressMatches[0].coordinates;
-        const forecastData = await WeatherService.fetchWeatherByCoordinates(coordinates);
+        const forecastData = await fetchWeatherByCoordinates(coordinates);
 
         setForecast(forecastData);
         setLoading(false);
@@ -59,7 +67,7 @@ const App: React.FC = () => {
   const handleUseMyLocation = async () => {
     try {
       setLoading(true);
-      const forecastData = await WeatherService.fetchWeatherByLocation() as ForecastItemType[];
+      const forecastData = await fetchWeatherByLocation() as ForecastItemType[];
 
       setForecast(forecastData);
       setLoading(false);
@@ -75,7 +83,8 @@ const App: React.FC = () => {
   const handleSearchByZIPCode = async (zipCode: string) => {
     try {
       setLoading(true);
-      const forecastData = await WeatherService.fetchWeatherByZIPCode(zipCode) as ForecastItemType[];
+      const forecastData = await fetchWeatherByZIPCode(zipCode) as ForecastItemType[];
+
 
       setForecast(forecastData);
       setLoading(false);
@@ -118,29 +127,40 @@ const App: React.FC = () => {
 
   const groupedForecast = groupForecastByDay(forecast);
 
-  return (
-    <main>
-      <h1>
-        Your Weather <span>Forecast</span>
-      </h1>
-      <SearchForm
-        onSearchByZIPCode={handleSearchByZIPCode}
-        onSearch={handleSearch}
-        onUseMyLocation={handleUseMyLocation}
-        isLocationBlocked={geolocationBlocked}
-      />
-      {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
-      {locationTitle && <h2>{locationTitle}</h2>}
-      {loading && <p>Loading...</p>}
+  const toggleDarkMode = () => {
+    setDarkMode((prevDarkMode) => !prevDarkMode);
+  };
 
-      {groupedForecast.map((group, index) => (
-        <div key={index}>
-          {group.map((item) => (
-            <ForecastItem key={item.number} forecastItem={item} />
-          ))}
-        </div>
-      ))}
-    </main>
+  return (
+    <div className={darkMode ? 'dark-mode' : ''}>
+      <div className="dark-mode-toggle">
+        <button onClick={toggleDarkMode}>
+          {darkMode ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
+        </button>
+      </div>
+      <main>
+        <h1>
+          Your Weather <span>Forecast</span>
+        </h1>
+        <SearchForm
+          onSearchByZIPCode={handleSearchByZIPCode}
+          onSearch={handleSearch}
+          onUseMyLocation={handleUseMyLocation}
+          isLocationBlocked={geolocationBlocked}
+        />
+        {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
+        {locationTitle && <h2>{locationTitle}</h2>}
+        {loading && <p>Loading...</p>}
+  
+        {groupedForecast.map((group, index) => (
+          <div key={index}>
+            {group.map((item) => (
+              <ForecastItem key={item.number} forecastItem={item} />
+            ))}
+          </div>
+        ))}
+      </main>
+    </div>
   );
 };
 
