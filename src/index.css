@@ -1,13 +1,89 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #d9f2ff, #a7dbf7, #78c4f4);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to bottom right, #87ceeb, #ff69b4, #00ff7f);
+  height: 100vh;
+  width: 100%;
+}
+
+.location-tooltip {
+  position: absolute;
+  top: 5;
+  left: 200px;
+  pointer-events: none;
+}
+
+.section {
+  max-width: 500px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  padding-top: 24px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #f2f5f7;
+}
+
+h1 {
+  font-size: 3xl;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+h2 {
+  font-size: xl;
+  margin-bottom: 4px;
+}
+
+.loading {
+  margin-top: 10px;
+}
+
+.forecast-group {
+  margin-bottom: 10px;
+}
+
+.forecast-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.forecast-item h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.forecast-item p {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.forecast-item img {
+  margin-top: 16px;
 }
