@@ -102,7 +102,7 @@ h2 {
 
 .search-bar {
   width: 300px; /* Adjust the width as per your requirement */
-  border-radius: 20px; /* Adjust the border-radius as per your requirement */
+  border-radius: 20px 0 0 20px;  /* Adjust the border-radius as per your requirement */
   transform: scaleY(1.2); /* Adjust the scale factor as per your requirement */
   transform-origin: top; /* Set the transform origin to the top */
   text-align: center;
@@ -139,8 +139,8 @@ h1{
 
 
 .search-click {
-  border-radius: 20px 0 0 20px; /* Rounded on the left side */
-  transform: scaleY(1.2);
+  border-radius: 0; /* Rounded on the left side */
+  transform: scaleY(1.20);
   transform-origin: top;
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -153,4 +153,99 @@ h1{
   /* For example, change the background color */
   background-color: lightgray;
   cursor: pointer;
+}
+
+
+.forecast-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.forecast-item-inner {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  width: 300px; /* Adjust the width as desired */
+  height: 300px; /* Adjust the height as desired */
+  font-family: 'Roboto', sans-serif; /* Use Roboto font */
+}
+.forecast-item-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-item-temperature {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-item-forecast {
+  margin-bottom: 0.5rem;
+}
+
+.forecast-item-icon {
+  margin-top: 0.5rem;
+}
+
+.forecast-item-observations {
+  font-weight: bold;
+}
+
+.forecast-day-button {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.forecast-day-button:hover {
+  background-color: #eee;
+}
+
+.forecast-day-button.active {
+  background-color: #ddd;
+}
+
+.forecast-items {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.day-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.day-button.active {
+  background-color: #f2f2f2;
+}
+
+.forecast-items {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }

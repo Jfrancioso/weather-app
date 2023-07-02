@@ -8,11 +8,10 @@ import {
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
 } from './services/WeatherService';
-import './index.css'; 
+import './index.css';
 import './tailwind.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-
 
 export type ForecastItemType = {
   number: number;
@@ -21,6 +20,9 @@ export type ForecastItemType = {
   temperatureUnit: string;
   shortForecast: string;
   icon: string;
+  wind: number;
+  startTime: string;
+  weatherCondition: string;
 };
 
 const App: React.FC = () => {
@@ -31,6 +33,7 @@ const App: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [locationTitle, setLocationTitle] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(0); // Set 0 as the default selected day
 
   useEffect(() => {
     if ('permissions' in navigator) {
@@ -55,7 +58,9 @@ const App: React.FC = () => {
         setErrorModalOpen(false);
         setErrorMessage('');
       } else {
-        throw new Error('Address not found. Please enter a valid address (Example: 1600 Pennsylvania Avenue NW, Washington, DC 20500 ).');
+        throw new Error(
+          'Address not found. Please enter a valid address (Example: 1600 Pennsylvania Avenue NW, Washington, DC 20500 ).'
+        );
       }
     } catch (error: any) {
       setErrorModalOpen(true);
@@ -67,11 +72,14 @@ const App: React.FC = () => {
   const handleUseMyLocation = async () => {
     try {
       setLoading(true);
-      const forecastData = await fetchWeatherByLocation() as ForecastItemType[];
-
-      setForecast(forecastData);
+      const forecastData = (await fetchWeatherByLocation()) as ForecastItemType[];
+      const processedForecastData = forecastData.map((item) => ({
+        ...item,
+        // wind: item.wind.speed, // Set wind speed
+      }));
+      setForecast(processedForecastData);
       setLoading(false);
-      setLocationTitle('Your Current Location');
+      setLocationTitle('Your Current Location'); // Update the location title
       setErrorModalOpen(false);
       setErrorMessage('');
     } catch (error) {
@@ -83,8 +91,7 @@ const App: React.FC = () => {
   const handleSearchByZIPCode = async (zipCode: string) => {
     try {
       setLoading(true);
-      const forecastData = await fetchWeatherByZIPCode(zipCode) as ForecastItemType[];
-
+      const forecastData = (await fetchWeatherByZIPCode(zipCode)) as ForecastItemType[];
 
       setForecast(forecastData);
       setLoading(false);
@@ -108,7 +115,7 @@ const App: React.FC = () => {
     let currentGroup: ForecastItemType[] = [];
 
     forecastData.forEach((item, index) => {
-      if (index === 0 || item.name !== forecastData[index - 1].name) {
+      if (index === 0 || item.startTime.slice(0, 10) !== forecastData[index - 1].startTime.slice(0, 10)) {
         if (currentGroup.length > 0) {
           groupedData.push(currentGroup);
         }
@@ -131,6 +138,30 @@ const App: React.FC = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };
 
+  const handleDayClick = (dayIndex: number) => {
+    if (selectedDay === dayIndex) {
+      setSelectedDay(null); // Deselect the day if it's already selected
+    } else {
+      setSelectedDay(dayIndex); // Select the day
+    }
+  };
+
+  const getDayLabel = (dayIndex: number): string => {
+    if (dayIndex === 0) {
+      return 'Today';
+    } else {
+      const today = new Date();
+      const date = new Date(forecast![0].startTime); // Assuming the first forecast is for the current day
+      date.setDate(date.getDate() + dayIndex);
+      if (date.getDate() === today.getDate()) {
+        return 'Today';
+      } else {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[date.getDay()];
+      }
+    }
+  };
+
   return (
     <div className={darkMode ? 'dark-mode' : ''}>
       <div className="dark-mode-toggle">
@@ -151,12 +182,22 @@ const App: React.FC = () => {
         {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
         {locationTitle && <h2>{locationTitle}</h2>}
         {loading && <p>Loading...</p>}
-  
+
         {groupedForecast.map((group, index) => (
           <div key={index}>
-            {group.map((item) => (
-              <ForecastItem key={item.number} forecastItem={item} />
-            ))}
+            <button
+              className={`day-button ${selectedDay === index ? 'active' : ''}`}
+              onClick={() => handleDayClick(index)}
+            >
+              {getDayLabel(index)}
+            </button>
+            {selectedDay === index && (
+              <div className="forecast-items">
+                {group.map((item) => (
+                  <ForecastItem key={item.number} forecastItem={item} />
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </main>

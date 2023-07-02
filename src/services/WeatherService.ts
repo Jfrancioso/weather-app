@@ -1,5 +1,6 @@
 const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
 const GOOGLE_API_KEY = "AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"; // Replace with your own Google API key
+const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY'; // Replace with your own AirNow API key
 
 async function fetchWeatherByAddress(address: string) {
   const formattedAddress = address.replace(/ /g, ",");
@@ -93,9 +94,24 @@ async function fetchWeatherByZIPCode(zipCode: string) {
   }
 }
 
+async function fetchAirQuality(latitude: number, longitude: number) {
+  const baseUrl = 'https://www.airnowapi.org/aq/observation/latLong/current/';
+  const url = `${baseUrl}?format=application/json&latitude=${latitude}&longitude=${longitude}&distance=25&API_KEY=${AIRNOW_API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching air quality data:', error);
+    throw error;
+  }
+}
+
 export {
   fetchWeatherByAddress,
   fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
-}; 
+  fetchAirQuality,
+};
