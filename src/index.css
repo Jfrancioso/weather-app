@@ -158,22 +158,20 @@ h1{
 
 .forecast-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-}
-
-.forecast-item-inner {
   background-color: #ffffff;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   margin-bottom: 1rem;
   text-align: center;
-  width: 300px; /* Adjust the width as desired */
-  height: 300px; /* Adjust the height as desired */
-  font-family: 'Roboto', sans-serif; /* Use Roboto font */
+  font-family: 'Roboto', sans-serif;
+  width: 300px;
+  height: 300px;
 }
+
 .forecast-item-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -183,7 +181,13 @@ h1{
 .forecast-item-temperature {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 0.5rem;
+  border-radius: 50%;
+  border: 2px solid #000;
+  text-align: center;
 }
+
 
 .forecast-item-forecast {
   margin-bottom: 0.5rem;
@@ -197,30 +201,6 @@ h1{
   font-weight: bold;
 }
 
-.forecast-day-button {
-  background-color: transparent;
-  border: none;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.forecast-day-button:hover {
-  background-color: #eee;
-}
-
-.forecast-day-button.active {
-  background-color: #ddd;
-}
-
-.forecast-items {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
 
 .day-button {
   display: flex;
@@ -248,4 +228,44 @@ h1{
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
+}
+
+.error-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 50;
+}
+
+.error-modal-inner {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.error-close-button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.error-close-button:hover {
+  background-color: #0056b3;
 }

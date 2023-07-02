@@ -47,11 +47,11 @@ const App: React.FC = () => {
     try {
       setLoading(true);
       const geocodeData = await fetchWeatherByAddress(address);
-
+  
       if (geocodeData.result.addressMatches[0]) {
         const coordinates = geocodeData.result.addressMatches[0].coordinates;
         const forecastData = await fetchWeatherByCoordinates(coordinates);
-
+  
         setForecast(forecastData);
         setLoading(false);
         setLocationTitle(address);
@@ -59,7 +59,7 @@ const App: React.FC = () => {
         setErrorMessage('');
       } else {
         throw new Error(
-          'Address not found. Please enter a valid address (Example: 1600 Pennsylvania Avenue NW, Washington, DC 20500 ).'
+          'Address not found. Please enter a valid address. For example, you can try entering "1600 Pennsylvania Avenue NW, Washington, DC 20500" -or- "20500".'
         );
       }
     } catch (error: any) {
@@ -68,6 +68,7 @@ const App: React.FC = () => {
       setLoading(false);
     }
   };
+  
 
   const handleUseMyLocation = async () => {
     try {

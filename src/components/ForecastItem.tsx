@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faCloud, faCloudRain, faBolt, faSnowflake } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   forecastItem: {
@@ -16,15 +14,7 @@ type Props = {
 };
 
 const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
-  const date = new Date(forecastItem.startTime).toLocaleDateString(); // Extract date from startTime
-  // Map weather conditions to corresponding FontAwesome icons
-  const weatherIcons: { [key: string]: any } = {
-    Clear: faSun,
-    Clouds: faCloud,
-    Rain: faCloudRain,
-    Thunderstorm: faBolt,
-    Snow: faSnowflake,
-  };
+  const date = new Date(forecastItem.startTime).toLocaleDateString();
 
   return (
     <div className="forecast-item">
@@ -36,9 +26,7 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
           {forecastItem.temperature} {forecastItem.temperatureUnit}
         </p>
         <p className="forecast-item-forecast">{forecastItem.shortForecast}</p>
-        <img src={forecastItem.icon} alt={forecastItem.shortForecast} className="forecast-item-icon" />
-        <FontAwesomeIcon icon={weatherIcons[forecastItem.weatherCondition as keyof typeof weatherIcons]} className="mt-2" />
-        <p className="forecast-item-observations">Observations:</p>
+        <img src={`${process.env.PUBLIC_URL}/icons/${forecastItem.icon}.png`} alt={forecastItem.shortForecast} className="forecast-item-icon" />
       </div>
     </div>
   );
