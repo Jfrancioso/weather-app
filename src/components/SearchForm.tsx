@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import Header from './Header'
+import Header from './Header';
 
 type Props = {
-  onSearch: (address: string) => void;
+  onSearch: (query: string) => void;
   onUseMyLocation: () => void;
   isLocationBlocked: boolean;
+  onSearchByZIPCode: (zipCode: string) => void;
 };
 
-const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked }) => {
-  const [address, setAddress] = useState('');
-
-  
+const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked, onSearchByZIPCode }) => {
+  const [query, setQuery] = useState('');
 
   const handleSearchClick = () => {
-    onSearch(address);
+    if (query.length === 5 && /^\d+$/.test(query)) {
+      onSearchByZIPCode(query);
+    } else {
+      onSearch(query);
+    }
   };
 
   const handleLocationClick = () => {
@@ -26,11 +29,12 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
     <div>
       <input
         type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        placeholder="Enter your address"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Enter your address or ZIP code"
       />
       <button onClick={handleSearchClick}>Get Forecast</button>
+
       <button
         onClick={handleLocationClick}
         disabled={isLocationBlocked}

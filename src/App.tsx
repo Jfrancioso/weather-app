@@ -4,7 +4,10 @@ import ErrorModal from './components/ErrorModal';
 import SearchForm from './components/SearchForm';
 import WeatherService from './services/WeatherService';
 
-export type ForecastItem = {
+const [darkMode, setDarkMode] = useState(false);
+
+
+export type ForecastItemType = {
   number: number;
   name: string;
   temperature: number;
@@ -13,9 +16,9 @@ export type ForecastItem = {
   icon: string;
 };
 
-const App = () => {
+const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [forecast, setForecast] = useState<ForecastItem[] | null>(null);
+  const [forecast, setForecast] = useState<ForecastItemType[] | null>(null);
   const [geolocationBlocked, setGeolocationBlocked] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -56,11 +59,27 @@ const App = () => {
   const handleUseMyLocation = async () => {
     try {
       setLoading(true);
-      const forecastData = await WeatherService.fetchWeatherByLocation() as ForecastItem[];
+      const forecastData = await WeatherService.fetchWeatherByLocation() as ForecastItemType[];
 
       setForecast(forecastData);
       setLoading(false);
       setLocationTitle('Your Current Location');
+      setErrorModalOpen(false);
+      setErrorMessage('');
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  const handleSearchByZIPCode = async (zipCode: string) => {
+    try {
+      setLoading(true);
+      const forecastData = await WeatherService.fetchWeatherByZIPCode(zipCode) as ForecastItemType[];
+
+      setForecast(forecastData);
+      setLoading(false);
+      setLocationTitle(`ZIP Code: ${zipCode}`);
       setErrorModalOpen(false);
       setErrorMessage('');
     } catch (error) {
@@ -74,10 +93,10 @@ const App = () => {
     setErrorMessage('');
   };
 
-  const groupForecastByDay = (forecastData: ForecastItem[] | null): ForecastItem[][] => {
+  const groupForecastByDay = (forecastData: ForecastItemType[] | null): ForecastItemType[][] => {
     if (!forecastData) return [];
-    const groupedData: ForecastItem[][] = [];
-    let currentGroup: ForecastItem[] = [];
+    const groupedData: ForecastItemType[][] = [];
+    let currentGroup: ForecastItemType[] = [];
 
     forecastData.forEach((item, index) => {
       if (index === 0 || item.name !== forecastData[index - 1].name) {
@@ -101,20 +120,28 @@ const App = () => {
 
   return (
     <main>
-        <h1>Your Weather <span>Forecast</span></h1>
-        <SearchForm onSearch={handleSearch} onUseMyLocation={handleUseMyLocation} isLocationBlocked={geolocationBlocked} />
-        {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
-        {locationTitle && <h2>{locationTitle}</h2>}
-        {loading && <p>Loading...</p>}
-  
-        {groupedForecast.map((group, index) => (
-          <div key={index}>
-            {group.map((item) => (
-              <ForecastItem key={item.number} forecastItem={item} />
-            ))}
-          </div>
-        ))}
-        </main>
+      <h1>
+        Your Weather <span>Forecast</span>
+      </h1>
+      <SearchForm
+        onSearchByZIPCode={handleSearchByZIPCode}
+        onSearch={handleSearch}
+        onUseMyLocation={handleUseMyLocation}
+        isLocationBlocked={geolocationBlocked}
+      />
+      {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
+      {locationTitle && <h2>{locationTitle}</h2>}
+      {loading && <p>Loading...</p>}
+
+      {groupedForecast.map((group, index) => (
+        <div key={index}>
+          {group.map((item) => (
+            <ForecastItem key={item.number} forecastItem={item} />
+          ))}
+        </div>
+      ))}
+    </main>
   );
-            };  
+};
+
 export default App;

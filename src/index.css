@@ -87,3 +87,15 @@ h2 {
 .forecast-item img {
   margin-top: 16px;
 }
+
+/* Light Mode */
+.light-mode {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
