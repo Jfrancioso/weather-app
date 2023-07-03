@@ -10,9 +10,9 @@ git clone https://github.com/Jfrancioso/weather-app.git
 
 ## 2. Install dependencies:
 
-cd weather-app
-npm install
-npm install react react-dom tailwindcss craco --save
+- cd weather-app
+- npm install
+- npm install react react-dom tailwindcss craco --save
 
 ## 3. Install the following additional dependencies:
 
