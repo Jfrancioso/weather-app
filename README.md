@@ -8,7 +8,6 @@ To run the Weather App locally, follow these steps:
 ## 1. Clone the repository:
 git clone https://github.com/Jfrancioso/weather-app.git
 
-
 ## 2. Install dependencies:
 
 cd weather-app
@@ -27,28 +26,12 @@ cd weather-app
 npm install
 npm install react react-dom tailwindcss craco --save
 
-
-## 4. Create a `craco.config.js` file in the project root with the following content:
-
-```javascript
-module.exports = {
-  style: {
-    postcss: {
-      plugins: [
-        require('tailwindcss'),
-        require('autoprefixer'),
-      ],
-    },
-  },
-};
-
-
-## 5. Create a tailwind.config.js file in the project root by running the following command:
+## 4. Create a tailwind.config.js file in the project root by running the following command:
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-## 6. Start the application:
+## 5. Start the application:
 
 npm run start
 The app will be running at http://localhost:3000.
