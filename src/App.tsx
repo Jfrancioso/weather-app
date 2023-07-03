@@ -24,7 +24,12 @@ export type ForecastItemType = {
   wind: number;
   startTime: string;
   weatherCondition: string;
+  relativeHumidity: number;
+  windSpeed: number;
+  windDirection: string;
+  detailedForecast: string;
 };
+
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -37,8 +42,10 @@ const App: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(0); // Set 0 as the default selected day
 
   useEffect(() => {
-    if ('permissions' in navigator) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+    if (!navigator.geolocation) {
+      console.warn("Geolocation is not supported by your browser. The 'Use My Location' feature may not work.");
+    } else {
+      navigator.permissions?.query({ name: 'geolocation' }).then((result) => {
         setGeolocationBlocked(result.state === 'denied');
       });
     }
@@ -48,28 +55,27 @@ const App: React.FC = () => {
     try {
       setLoading(true);
       const geocodeData = await fetchWeatherByAddress(address);
-  
+
       if (geocodeData.result.addressMatches[0]) {
         const coordinates = geocodeData.result.addressMatches[0].coordinates;
         const forecastData = await fetchWeatherByCoordinates(coordinates);
-  
+
         setForecast(forecastData);
         setLoading(false);
         setLocationTitle(address);
         setErrorModalOpen(false);
         setErrorMessage('');
       } else {
-        throw new Error(
-          'Address not found. Please enter a valid address. For example, you can try entering "1600 Pennsylvania Avenue NW, Washington, DC 20500" -or- "20500".'
-        );
+        const errorMessage = 'Address not found. Please enter a valid address. For example, you can try entering "1600 Pennsylvania Avenue NW, Washington, DC 20500" or "20500".';
+        throw new Error(errorMessage);
       }
     } catch (error: any) {
+      const errorMessage = error.message || 'Error occurred while fetching weather data. Please try again later.';
       setErrorModalOpen(true);
-      setErrorMessage(error.message);
+      setErrorMessage(errorMessage);
       setLoading(false);
     }
   };
-  
 
   const handleUseMyLocation = async () => {
     try {
@@ -77,7 +83,7 @@ const App: React.FC = () => {
       const forecastData = (await fetchWeatherByLocation()) as ForecastItemType[];
       const processedForecastData = forecastData.map((item) => ({
         ...item,
-        // wind: item.wind.speed, // Set wind speed
+        wind: item.windSpeed, // Set wind speed
       }));
       setForecast(processedForecastData);
       setLoading(false);
@@ -95,7 +101,7 @@ const App: React.FC = () => {
       setLoading(true);
       const forecastData = await fetchWeatherByZIPCode(zipCode);
       const cityStateData = await fetchCityStateByZIPCode(zipCode); // Function to fetch city and state data
-  
+
       setForecast(forecastData);
       setLoading(false);
       setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`); // Update the location title with city and state
@@ -106,7 +112,6 @@ const App: React.FC = () => {
       setLoading(false);
     }
   };
-  
 
   const closeModal = () => {
     setErrorModalOpen(false);
@@ -151,11 +156,15 @@ const App: React.FC = () => {
   };
 
   const getDayLabel = (dayIndex: number): string => {
+    if (!forecast || forecast.length === 0) {
+      return ''; // Return an empty string or handle the case when forecast is null or empty
+    }
+
     if (dayIndex === 0) {
       return 'Today';
     } else {
       const today = new Date();
-      const date = new Date(forecast![0].startTime); // Assuming the first forecast is for the current day
+      const date = new Date(forecast[0].startTime); // Assuming the first forecast is for the current day
       date.setDate(date.getDate() + dayIndex);
       if (date.getDate() === today.getDate()) {
         return 'Today';
@@ -199,7 +208,7 @@ const App: React.FC = () => {
             {selectedDay === index && (
               <div className="forecast-items">
                 {group.map((item) => (
-                  <ForecastItem key={item.number} forecastItem={item} />
+                  <ForecastItem key={item.number} forecastItem={item} isDarkMode={darkMode} />
                 ))}
               </div>
             )}

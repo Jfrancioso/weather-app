@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 type Props = {
   forecastItem: {
@@ -10,11 +10,19 @@ type Props = {
     shortForecast: string;
     icon: string;
     weatherCondition: string;
+    windSpeed: number;
+    windDirection: string;
+    relativeHumidity: number;
+    detailedForecast: string;
   };
+  isDarkMode: boolean;
 };
 
-const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
-  const date = new Date(forecastItem.startTime).toLocaleDateString(); // Extract date from startTime
+const ForecastItem: React.FC<Props> = ({ forecastItem, isDarkMode }) => {
+  const date = new Date(forecastItem.startTime).toLocaleDateString();
+  const [showDetailedForecast, setShowDetailedForecast] = useState(false);
+
+  const forecastItemClasses = `forecast-item ${isDarkMode ? 'forecast-item-dark' : ''}`;
 
   const getWeatherImages = (shortForecast: string) => {
     const weatherImages: { [key: string]: string[] } = {
@@ -59,7 +67,8 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
       'Clear': ['/clear-skies-sun.gif'],
       'Patchy Fog': ['/foggy.gif'],
       'Patchy Fog then Mostly Sunny': ['/foggy.gif', '/right-arrow.gif', '/sunny.gif'],
-      
+      'Showers And Thunderstorms Likely then Chance Showers And Thunderstorms': ['/rain-and-thunder.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
+      'Partly Cloudy then Slight Chance Rain Showers': ['/partly-sunny.gif', '/right-arrow.gif', '/rain.gif'],    
       
       // Add more mappings as needed based on your weather images in the public folder
     };
@@ -78,6 +87,10 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
     return null;
   };
 
+  const toggleDetailedForecast = () => {
+    setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
+  };
+
   return (
     <div className="forecast-item">
       <div className="forecast-item-inner" key={forecastItem.number}>
@@ -85,10 +98,16 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
           {date} - {forecastItem.name}
         </h3>
         <p className="forecast-item-temperature">
-          <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
+        <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
         </p>
         <p className="forecast-item-forecast">{forecastItem.shortForecast}</p>
+        {showDetailedForecast && <p className="forecast-item-detailed-forecast">{forecastItem.detailedForecast}</p>}
         {getWeatherImages(forecastItem.shortForecast)}
+        <p className='forecast-item-wind-speed'>Wind Speed: {forecastItem.windSpeed}</p>
+        <p className='forecast-item-wind-direction'>Wind Direction: {forecastItem.windDirection}</p>
+        <button onClick={toggleDetailedForecast}>
+          {showDetailedForecast ? 'Hide Details' : 'Show Details'}
+        </button>
       </div>
     </div>
   );

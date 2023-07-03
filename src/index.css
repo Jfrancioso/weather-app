@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+
 body {
   display: flex;
   justify-content: center;
@@ -88,17 +89,18 @@ h2 {
   margin-top: 16px;
 } */
 
-/* Light Mode */
-.light-mode {
-  background-color: #fff;
-  color: #333;
+/* Default mode */
+body {
+  color: black;
+  background-color: white;
 }
 
-/* Dark Mode */
-.dark-mode {
-  background-color: #333;
-  color: #fff;
+/* Dark mode */
+body.dark-mode {
+  color: white;
+  background-color: black;
 }
+
 
 .search-bar {
   width: 300px; /* Adjust the width as per your requirement */
@@ -161,21 +163,30 @@ h1{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255); /* Updated with transparency */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   margin-bottom: 1rem;
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 410px; /* Increase the height to accommodate the detailed forecast */
+  position: relative;
+}
+
+.forecast-item-detailed-forecast {
+  font-size: 1rem; /* Add a font size to make the text visible */
+  max-height: 100px; /* Adjust the maximum height as per your requirement */
+  overflow: auto; /* Add overflow property to enable scrolling if needed */
+  margin-bottom: 0; /* Remove the bottom margin to reduce spacing */
 }
 
 .forecast-item-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  font-family: 'Roboto', sans-serif;
 }
 
 .forecast-item-temperature {
@@ -278,7 +289,7 @@ h1{
 }
 
 .weather-image {
-  width: 40px; /* Adjust the width and height as needed */
-  height: 40px;
+  width: 60px; /* Adjust the width and height as needed */
+  height: 60px;
   object-fit: cover;
 }
