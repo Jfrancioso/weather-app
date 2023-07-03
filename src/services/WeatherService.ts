@@ -108,10 +108,31 @@ async function fetchAirQuality(latitude: number, longitude: number) {
   }
 }
 
+async function fetchCityStateByZIPCode(zipCode: string) {
+  const geocodeResponse = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${GOOGLE_API_KEY}`
+  );
+  const geocodeData = await geocodeResponse.json();
+
+  if (geocodeData.status === "OK" && geocodeData.results.length > 0) {
+    const { address_components } = geocodeData.results[0];
+    const cityData = address_components.find((component: any) => component.types.includes("locality"));
+    const stateData = address_components.find((component: any) => component.types.includes("administrative_area_level_1"));
+
+    const city = cityData ? cityData.long_name : "";
+    const state = stateData ? stateData.short_name : "";
+
+    return { city, state };
+  } else {
+    throw new Error("Invalid ZIP code");
+  }
+}
+
 export {
   fetchWeatherByAddress,
   fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
   fetchAirQuality,
+  fetchCityStateByZIPCode,
 };

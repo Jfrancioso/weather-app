@@ -269,3 +269,16 @@ h1{
 .error-close-button:hover {
   background-color: #0056b3;
 }
+
+.weather-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.weather-image {
+  width: 40px; /* Adjust the width and height as needed */
+  height: 40px;
+  object-fit: cover;
+}

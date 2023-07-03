@@ -7,6 +7,7 @@ import {
   fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
+  fetchCityStateByZIPCode,
 } from './services/WeatherService';
 import './index.css';
 import './tailwind.css';
@@ -92,11 +93,12 @@ const App: React.FC = () => {
   const handleSearchByZIPCode = async (zipCode: string) => {
     try {
       setLoading(true);
-      const forecastData = (await fetchWeatherByZIPCode(zipCode)) as ForecastItemType[];
-
+      const forecastData = await fetchWeatherByZIPCode(zipCode);
+      const cityStateData = await fetchCityStateByZIPCode(zipCode); // Function to fetch city and state data
+  
       setForecast(forecastData);
       setLoading(false);
-      setLocationTitle(`ZIP Code: ${zipCode}`);
+      setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`); // Update the location title with city and state
       setErrorModalOpen(false);
       setErrorMessage('');
     } catch (error) {
@@ -104,6 +106,7 @@ const App: React.FC = () => {
       setLoading(false);
     }
   };
+  
 
   const closeModal = () => {
     setErrorModalOpen(false);
@@ -189,6 +192,7 @@ const App: React.FC = () => {
             <button
               className={`day-button ${selectedDay === index ? 'active' : ''}`}
               onClick={() => handleDayClick(index)}
+              style={{ backgroundColor: selectedDay === index ? 'green' : '' }}
             >
               {getDayLabel(index)}
             </button>
