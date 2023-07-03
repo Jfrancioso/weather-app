@@ -38,7 +38,7 @@ module.exports = {
     },
   },
 };
-
+##
 Create a tailwind.config.js file in the project root by running the following command:
 npx tailwindcss init
 
