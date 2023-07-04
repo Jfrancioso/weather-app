@@ -15,15 +15,16 @@ type Props = {
     relativeHumidity: number;
     detailedForecast: string;
   };
-  isDarkMode: boolean;
 };
 
-const ForecastItem: React.FC<Props> = ({ forecastItem, isDarkMode }) => {
+//forecast-item-inner for the forecast item title, temperature, forecast, and button
+const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
   const date = new Date(forecastItem.startTime).toLocaleDateString();
   const [showDetailedForecast, setShowDetailedForecast] = useState(false);
 
-  const forecastItemClasses = `forecast-item ${isDarkMode ? 'forecast-item-dark' : ''}`;
+ 
 
+  // This function will return the weather images based on the shortForecast
   const getWeatherImages = (shortForecast: string) => {
     const weatherImages: { [key: string]: string[] } = {
       'Sunny': ['/sunny.gif'],
@@ -69,10 +70,15 @@ const ForecastItem: React.FC<Props> = ({ forecastItem, isDarkMode }) => {
       'Patchy Fog then Mostly Sunny': ['/foggy.gif', '/right-arrow.gif', '/sunny.gif'],
       'Showers And Thunderstorms Likely then Chance Showers And Thunderstorms': ['/rain-and-thunder.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
       'Partly Cloudy then Slight Chance Rain Showers': ['/partly-sunny.gif', '/right-arrow.gif', '/rain.gif'],    
-      
-      // Add more mappings as needed based on your weather images in the public folder
+      'Areas Of Fog': ['/foggy.gif'],
+      'Mostly Clear then Slight Chance Showers And Thunderstorms': ['/clear-skies-sun.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
+      'Mostly Cloudy then Slight Chance Showers And Thunderstorms': ['/cloudy.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
+      'Slight Chance Showers And Thunderstorms then Chance Showers And Thunderstorms': ['/rain-and-thunder.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
+    
+    //not all weather shortforecast possibilities accounted for yet
     };
 
+    // If the shortForecast is in the weatherImages object, return the images
     const imageSrcs = weatherImages[shortForecast];
     if (imageSrcs) {
       return (
@@ -87,10 +93,12 @@ const ForecastItem: React.FC<Props> = ({ forecastItem, isDarkMode }) => {
     return null;
   };
 
+  // This function will toggle the detailed forecast
   const toggleDetailedForecast = () => {
     setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
   };
 
+  // This function will return the forecast item as a whole
   return (
     <div className="forecast-item">
       <div className="forecast-item-inner" key={forecastItem.number}>

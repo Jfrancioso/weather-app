@@ -14,6 +14,7 @@ import './tailwind.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
+//Type definition for the forecast item
 export type ForecastItemType = {
   number: number;
   name: string;
@@ -30,7 +31,7 @@ export type ForecastItemType = {
   detailedForecast: string;
 };
 
-
+//State variables for the app
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [forecast, setForecast] = useState<ForecastItemType[] | null>(null);
@@ -41,21 +42,26 @@ const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(0); // Set 0 as the default selected day
 
+  //useEffect hook to check if geolocation is supported by the browser
   useEffect(() => {
+    //check if geolocation is supported by the browser
     if (!navigator.geolocation) {
       console.warn("Geolocation is not supported by your browser. The 'Use My Location' feature may not work.");
     } else {
+      //query the permission status
       navigator.permissions?.query({ name: 'geolocation' }).then((result) => {
         setGeolocationBlocked(result.state === 'denied');
       });
     }
   }, []);
 
+//handleSearch for weather search by address
   const handleSearch = async (address: string) => {
     try {
       setLoading(true);
       const geocodeData = await fetchWeatherByAddress(address);
 
+      //check if the address is valid
       if (geocodeData.result.addressMatches[0]) {
         const coordinates = geocodeData.result.addressMatches[0].coordinates;
         const forecastData = await fetchWeatherByCoordinates(coordinates);
@@ -77,6 +83,7 @@ const App: React.FC = () => {
     }
   };
 
+  //handleUseMyLocation for weather search by location
   const handleUseMyLocation = async () => {
     try {
       setLoading(true);
@@ -96,6 +103,7 @@ const App: React.FC = () => {
     }
   };
 
+  //handleSearchByZIPCode for weather search by zip code
   const handleSearchByZIPCode = async (zipCode: string) => {
     try {
       setLoading(true);
@@ -113,11 +121,13 @@ const App: React.FC = () => {
     }
   };
 
+  //closeModal for closing the error modal
   const closeModal = () => {
     setErrorModalOpen(false);
     setErrorMessage('');
   };
 
+  //groupForecastByDay for grouping the forecast by day
   const groupForecastByDay = (forecastData: ForecastItemType[] | null): ForecastItemType[][] => {
     if (!forecastData) return [];
     const groupedData: ForecastItemType[][] = [];
@@ -141,12 +151,15 @@ const App: React.FC = () => {
     return groupedData;
   };
 
+  //groupedForecast for grouping the forecast
   const groupedForecast = groupForecastByDay(forecast);
 
+  //toggleDarkMode for toggling the dark mode **currently not in use**
   const toggleDarkMode = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };
 
+  //handleDayClick for handling the day click
   const handleDayClick = (dayIndex: number) => {
     if (selectedDay === dayIndex) {
       setSelectedDay(null); // Deselect the day if it's already selected
@@ -155,10 +168,12 @@ const App: React.FC = () => {
     }
   };
 
+  //function to get the label for a day
   const getDayLabel = (dayIndex: number): string => {
     if (!forecast || forecast.length === 0) {
       return ''; // Return an empty string or handle the case when forecast is null or empty
     }
+
 
     if (dayIndex === 0) {
       return 'Today';
@@ -175,13 +190,14 @@ const App: React.FC = () => {
     }
   };
 
+  //return for the app
   return (
-    <div className={darkMode ? 'dark-mode' : ''}>
-      <div className="dark-mode-toggle">
-        <button onClick={toggleDarkMode}>
-          {darkMode ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
-        </button>
-      </div>
+    // <div className={darkMode ? 'dark-mode' : ''}>
+    //   <div className="dark-mode-toggle">
+    //     <button onClick={toggleDarkMode}>
+    //       {darkMode ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
+    //     </button>
+    //   </div>
       <main>
         <h1>
           Your Weather <span>Forecast</span>
@@ -208,14 +224,14 @@ const App: React.FC = () => {
             {selectedDay === index && (
               <div className="forecast-items">
                 {group.map((item) => (
-                  <ForecastItem key={item.number} forecastItem={item} isDarkMode={darkMode} />
+                  <ForecastItem key={item.number} forecastItem={item} />
                 ))}
               </div>
             )}
           </div>
         ))}
       </main>
-    </div>
+    // </div>
   );
 };
 

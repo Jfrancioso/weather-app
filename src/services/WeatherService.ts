@@ -1,7 +1,12 @@
+//work-around for CORS error, currently may need to be updated to a different proxy server
+//may need to request access to CORS Anywhere server for production
+//herokuapp for CORS may need to be updated to allow access for more requests
 const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
-const GOOGLE_API_KEY = "AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"; // Replace with your own Google API key
-const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY'; // Replace with your own AirNow API key
+const GOOGLE_API_KEY = "AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"; // will have to hide this in the future for production through .env file
+const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY';
 
+
+//geocoding api to confirm full address and get coordinates
 async function fetchWeatherByAddress(address: string) {
   const formattedAddress = address.replace(/ /g, ",");
   const response = await fetch(
@@ -13,6 +18,7 @@ async function fetchWeatherByAddress(address: string) {
   return data;
 }
 
+//weather api to get forecast by coordinates
 async function fetchWeatherByCoordinates(coordinates: any) {
   const weatherResponse = await fetch(
     `${PROXY_URL}https://api.weather.gov/points/${coordinates.y},${coordinates.x}`
@@ -31,6 +37,7 @@ async function fetchWeatherByCoordinates(coordinates: any) {
   return forecastData.properties.periods;
 }
 
+//weather api to get forecast by location for current location
 async function fetchWeatherByLocation() {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
@@ -65,6 +72,7 @@ async function fetchWeatherByLocation() {
   });
 }
 
+//weather api to get forecast by zip code to be used in search bar
 async function fetchWeatherByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${GOOGLE_API_KEY}`
@@ -94,6 +102,7 @@ async function fetchWeatherByZIPCode(zipCode: string) {
   }
 }
 
+//air quality api to get air quality by coordinates **currently not in use**
 async function fetchAirQuality(latitude: number, longitude: number) {
   const baseUrl = 'https://www.airnowapi.org/aq/observation/latLong/current/';
   const url = `${baseUrl}?format=application/json&latitude=${latitude}&longitude=${longitude}&distance=25&API_KEY=${AIRNOW_API_KEY}`;
@@ -108,6 +117,7 @@ async function fetchAirQuality(latitude: number, longitude: number) {
   }
 }
 
+//geocoding api to get city and state by zip code
 async function fetchCityStateByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${GOOGLE_API_KEY}`
