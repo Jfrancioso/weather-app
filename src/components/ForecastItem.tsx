@@ -17,14 +17,13 @@ type Props = {
   };
 };
 
-//forecast-item-inner for the forecast item title, temperature, forecast, and button
 const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
   const date = new Date(forecastItem.startTime).toLocaleDateString();
+  const today = new Date().toLocaleDateString(); // Get the current date as a string
+
   const [showDetailedForecast, setShowDetailedForecast] = useState(false);
 
- 
-
-  // This function will return the weather images based on the shortForecast
+    /// This function will return the weather images based on the shortForecast
   const getWeatherImages = (shortForecast: string) => {
     const weatherImages: { [key: string]: string[] } = {
       'Sunny': ['/sunny.gif'],
@@ -77,26 +76,51 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
     
     //not all weather shortforecast possibilities accounted for yet
     };
+ // If the shortForecast is in the weatherImages object, return the images
+ const imageSrcs = weatherImages[shortForecast];
+ if (imageSrcs) {
+   return (
+     <div className="weather-images-container">
+       {imageSrcs.map((src) => (
+         <img key={src} src={process.env.PUBLIC_URL + src} alt={shortForecast} className="weather-image" />
+       ))}
+     </div>
+   );
+ }
+ return null;
+};
 
-    // If the shortForecast is in the weatherImages object, return the images
-    const imageSrcs = weatherImages[shortForecast];
-    if (imageSrcs) {
-      return (
-        <div className="weather-images-container">
-          {imageSrcs.map((src) => (
-            <img key={src} src={process.env.PUBLIC_URL + src} alt={shortForecast} className="weather-image" />
-          ))}
-        </div>
-      );
-    }
+// This function will toggle the detailed forecast
+const toggleDetailedForecast = () => {
+ setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
+};
 
-    return null;
+// This function checks if it is today's forecast and returns the current time
+const getCurrentTime = () => {
+ if (date === today && forecastItem.name !== 'Tonight') {
+   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+   return <p className="current-time">Current Time: {currentTime}</p>;
+ }
+ return null;
+};
+
+// This function checks if it is tonight's forecast and returns the start time
+const getStartTimeTonight = () => {
+ if (date === today && forecastItem.name === 'Tonight') {
+   const startTime = new Date(forecastItem.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+   return <p className="current-time">Start Time: {startTime}</p>;
+ }
+ return null;
+};
+
+const getStartTimeForFollowingDays = () => {
+  if (date !== today) {
+    const startTime = new Date(forecastItem.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return <p className="current-time">Start Time: {startTime}</p>;
+  }
+  return null;
   };
 
-  // This function will toggle the detailed forecast
-  const toggleDetailedForecast = () => {
-    setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
-  };
 
   // This function will return the forecast item as a whole
   return (
@@ -105,8 +129,11 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
         <h3 className="forecast-item-title">
           {date} - {forecastItem.name}
         </h3>
+        {getCurrentTime()} {/* Display the current time if it is today's forecast */}
+        {getStartTimeTonight()} {/* Display the start time if it is tonight's forecast */}
+        {getStartTimeForFollowingDays()}
         <p className="forecast-item-temperature">
-        <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
+          <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
         </p>
         <p className="forecast-item-forecast">{forecastItem.shortForecast}</p>
         {showDetailedForecast && <p className="forecast-item-detailed-forecast">{forecastItem.detailedForecast}</p>}

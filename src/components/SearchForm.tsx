@@ -1,20 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { Loader } from '@googlemaps/js-api-loader';
 
 type Props = {
-  onSearch: (query: string) => void;
+  onSearch: (address: string) => void;
   onUseMyLocation: () => void;
   isLocationBlocked: boolean;
   onSearchByZIPCode: (zipCode: string) => void;
 };
 
-//search-bar for the search bar
 const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked, onSearchByZIPCode }) => {
   const [query, setQuery] = useState('');
+  const autocompleteRef = useRef<HTMLInputElement | null>(null);
 
-  //handleSearchClick for zip code search
+  useEffect(() => {
+    // Load the Google Maps API
+    const loader = new Loader({
+      apiKey: 'AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM',
+      version: 'weekly',
+      libraries: ['places'],
+    });
+
+    // Initialize the Google Maps autocomplete
+    loader.load().then(() => {
+      const autocomplete = new google.maps.places.Autocomplete(autocompleteRef.current!, {
+        types: ['geocode'], // Restrict to addresses only
+      });
+
+      // When the user selects an address from the dropdown, update the query state
+      autocomplete.addListener('place_changed', () => {
+        const selectedPlace = autocomplete.getPlace();
+        if (selectedPlace && selectedPlace.formatted_address) {
+          setQuery(selectedPlace.formatted_address);
+        }
+      });
+    });
+  }, []);
+
+  // Handle the search button click
   const handleSearchClick = () => {
     if (query.length === 5 && /^\d+$/.test(query)) {
       onSearchByZIPCode(query);
@@ -23,19 +47,15 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
     }
   };
 
-  //handleLocationClick for location search
+  // Handle the "Use My Location" button click
   const handleLocationClick = () => {
     onUseMyLocation();
   };
 
-  //handleTooltipClick for tooltip **currently not in use**
-  const [showTooltip, setShowTooltip] = useState(false);
-
   return (
     <div>
-      <label htmlFor="zipCodeInput">ZIP Code</label>
       <input
-        id="zipCodeInput"
+        ref={autocompleteRef}
         className="search-bar"
         type="text"
         value={query}
@@ -54,4 +74,5 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
     </div>
   );
 };
+
 export default SearchForm;

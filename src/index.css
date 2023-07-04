@@ -2,7 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
+/* Base styles */
 body {
   display: flex;
   justify-content: center;
@@ -10,84 +10,6 @@ body {
   min-height: 100vh;
   background-image: linear-gradient(to bottom right, #d9f2ff, #a7dbf7, #78c4f4);
 }
-
-/* .main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: linear-gradient(to bottom right, #87ceeb, #ff69b4, #00ff7f);
-  height: 100vh;
-  width: 100%;
-} */
-
-/* .location-tooltip {
-  position: absolute;
-  top: 5;
-  left: 200px;
-  pointer-events: none;
-} */
-
-/* .section {
-  max-width: 500px;
-  padding: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  padding-top: 24px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: #f2f5f7;
-} */
-
-/* h1 {
-  font-size: 3xl;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-h2 {
-  font-size: xl;
-  margin-bottom: 4px;
-}
-
-.loading {
-  margin-top: 10px;
-}
-
-.forecast-group {
-  margin-bottom: 10px;
-}
-
-.forecast-item {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.forecast-item h3 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.forecast-item p {
-  font-size: 1.25rem;
-  margin-bottom: 8px;
-}
-
-.forecast-item img {
-  margin-top: 16px;
-} */
 
 /* Default mode */
 body {
@@ -101,86 +23,69 @@ body.dark-mode {
   background-color: black;
 }
 
-
+/* Search bar styles */
 .search-bar {
-  width: 300px; /* Adjust the width as per your requirement */
-  border-radius: 20px 0 0 20px;  /* Adjust the border-radius as per your requirement */
-  transform: scaleY(1.2); /* Adjust the scale factor as per your requirement */
-  transform-origin: top; /* Set the transform origin to the top */
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-}
-
-h1{
-  font-family: 'Roboto', sans-serif;
-}
-
-
-.location-button {
-  width: 30px;
-  border-radius: 0 20px 20px 0; /* Rounded on the right side */
+  width: 300px;
+  border-radius: 20px 0 0 20px;
   transform: scaleY(1.2);
   transform-origin: top;
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  margin-left: -4px; /* Add negative margin to overlap border */
-  /* Add styles for normal state */
 }
 
-/* Attach buttons to each other */
-.search-click {
-  margin-right: 2px; /* Adjust the margin as needed */
+h1 {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Location button styles */
+.location-button {
+  width: 30px;
+  border-radius: 0 20px 20px 0;
+  transform: scaleY(1.2);
+  transform-origin: top;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-left: -4px;
 }
 
 .location-button:hover {
-  /* Add styles for hover state */
-  /* For example, change the background color */
   background-color: lightgray;
   cursor: pointer;
 }
 
-
+/* Search click styles */
 .search-click {
-  border-radius: 0; /* Rounded on the left side */
+  border-radius: 0;
   transform: scaleY(1.20);
   transform-origin: top;
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  /* Add styles for normal state */
 }
 
-
 .search-click:hover {
-  /* Add styles for hover state */
-  /* For example, change the background color */
   background-color: lightgray;
   cursor: pointer;
 }
 
-
+/* Forecast item styles */
 .forecast-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(255, 255, 255); /* Updated with transparency */
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   width: 350px;
-  height: 410px; /* Increase the height to accommodate the detailed forecast */
+  height: auto; /* Updated to auto to accommodate varying content height */
   position: relative;
+  overflow: hidden; /* Added overflow property to hide overflowing content */
 }
 
-.forecast-item-detailed-forecast {
-  font-size: 1rem; /* Add a font size to make the text visible */
-  max-height: 100px; /* Adjust the maximum height as per your requirement */
-  overflow: auto; /* Add overflow property to enable scrolling if needed */
-  margin-bottom: 0; /* Remove the bottom margin to reduce spacing */
-}
 
 .forecast-item-title {
   font-size: 1.5rem;
@@ -199,20 +104,26 @@ h1{
   text-align: center;
 }
 
-
 .forecast-item-forecast {
   margin-bottom: 0.5rem;
+}
+
+.forecast-item-detailed-forecast {
+  font-size: 1rem;
+  max-height: 100px;
+  overflow: auto;
+  margin-bottom: 0;
+  font-weight: bold;
+  font-style: italic;
+  font-family: 'Roboto', sans-serif;
 }
 
 .forecast-item-icon {
   margin-top: 0.5rem;
 }
 
-.forecast-item-observations {
-  font-weight: bold;
-}
 
-
+/* Day button styles */
 .day-button {
   display: flex;
   align-items: center;
@@ -235,12 +146,15 @@ h1{
   background-color: #f2f2f2;
 }
 
+/* Forecast items container styles */
 .forecast-items {
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
+  gap: 1rem;
 }
 
+/* Error modal styles */
 .error-modal {
   position: fixed;
   top: 0;
@@ -281,6 +195,7 @@ h1{
   background-color: #0056b3;
 }
 
+/* Weather icon styles */
 .weather-icon-container {
   display: flex;
   align-items: center;
@@ -289,7 +204,7 @@ h1{
 }
 
 .weather-image {
-  width: 60px; /* Adjust the width and height as needed */
+  width: 60px;
   height: 60px;
   object-fit: cover;
 }
