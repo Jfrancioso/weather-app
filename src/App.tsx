@@ -3,15 +3,12 @@ import ForecastItem from './components/ForecastItem';
 import ErrorModal from './components/ErrorModal';
 import SearchForm from './components/SearchForm';
 import {
-  fetchWeatherByAddress,
-  fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
   fetchCityStateByZIPCode,
 } from './services/WeatherService';
 import './index.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+
 
 //Type definition for the forecast item
 export type ForecastItemType = {
@@ -162,10 +159,10 @@ const App: React.FC = () => {
   //groupedForecast for grouping the forecast
   const groupedForecast = groupForecastByDay(forecast);
 
-  //toggleDarkMode for toggling the dark mode **currently not in use**
-  const toggleDarkMode = () => {
-    setDarkMode((prevDarkMode) => !prevDarkMode);
-  };
+  // //toggleDarkMode for toggling the dark mode **currently not in use**
+  // const toggleDarkMode = () => {
+  //   setDarkMode((prevDarkMode) => !prevDarkMode);
+  // };
 
   //handleDayClick for handling the day click
   const handleDayClick = (dayIndex: number) => {
