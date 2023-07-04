@@ -10,7 +10,6 @@ import {
   fetchCityStateByZIPCode,
 } from './services/WeatherService';
 import './index.css';
-import './tailwind.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 

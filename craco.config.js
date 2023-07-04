@@ -1,11 +1,9 @@
 module.exports = {
-    style: {
-      postcss: {
-        plugins: [
-          require('tailwindcss'),
-          require('autoprefixer'),
-        ],
+    webpack: {
+      configure: (webpackConfig) => {
+        // Modify the webpack configuration as needed
+        return webpackConfig;
       },
     },
-  }
+  };
   

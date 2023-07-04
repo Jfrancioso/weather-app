@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css'; // Import the index.css file here
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import './tailwind.css';
+
 
 ReactDOM.render(
   <React.StrictMode>
