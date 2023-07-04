@@ -1,5 +1,5 @@
 **Weather App**
-A weather forecast application built with JSX, Tailwind CSS, and React.
+A weather forecast application built with JSX, TSX, and React.
 
 ## Installation
 To run the Weather App locally, follow these steps:
@@ -27,7 +27,7 @@ npm install
 </pre>
 <pre>
 <code>
-npm install react react-dom tailwindcss craco --save
+npm install react react-dom craco --save
 </code>
 </pre>
 
