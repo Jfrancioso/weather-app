@@ -2,7 +2,6 @@
 //may need to request access to CORS Anywhere server for production
 //herokuapp for CORS may need to be updated to allow access for more requests
 const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
-const GOOGLE_API_KEY = "AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"; // will have to hide this in the future for production through .env file
 const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY';
 
 
@@ -75,7 +74,7 @@ async function fetchWeatherByLocation() {
 //weather api to get forecast by zip code to be used in search bar
 async function fetchWeatherByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${GOOGLE_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${process.env.REACT_APP_API_KEY}`
   );
   const geocodeData = await geocodeResponse.json();
 
@@ -120,7 +119,7 @@ async function fetchAirQuality(latitude: number, longitude: number) {
 //geocoding api to get city and state by zip code
 async function fetchCityStateByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${GOOGLE_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${process.env.REACT_APP_API_KEY}`
   );
   const geocodeData = await geocodeResponse.json();
 

@@ -17,7 +17,7 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
   useEffect(() => {
     // Load the Google Maps API
     const loader = new Loader({
-      apiKey: 'AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM', //possible redundancy will need to hide if production
+      apiKey: process.env.REACT_APP_API_KEY || '', 
       version: 'weekly',
       libraries: ['places'],
     });
