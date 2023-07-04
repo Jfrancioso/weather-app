@@ -1,9 +1,13 @@
+import dotenv from 'dotenv'; // Import dotenv package
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css'; // Import the index.css file here
+import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
+// Load environment variables in the Node.js environment
+if (typeof window === 'undefined') {
+  dotenv.config();
+}
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,5 +15,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-reportWebVitals();
