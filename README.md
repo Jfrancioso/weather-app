@@ -69,7 +69,8 @@ This application utilizes the following APIs:
 
 - Geocoding API: Used for converting addresses into geographic coordinates.
 - Weather API: Provides weather forecast data based on the coordinates of a location.
-- Air Quality API: Retrieves current air quality information based on latitude and longitude coordinates.
+- Air Quality API: Retrieves current air quality information based on latitude and longitude coordinates. **Currently Not in Use**
+- Google API: Used for AutoLoading addresses through a drop-down search bar.
 
 Make sure to replace the placeholder text with the actual names and descriptions of the APIs you are using. Additionally, if you have any specific instructions or requirements for obtaining API keys or credentials, you can mention them in this section as well.
 
