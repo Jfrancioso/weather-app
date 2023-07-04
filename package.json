@@ -35,7 +35,8 @@
     "eject": "react-scripts eject",
     "build:css": "postcss src/tailwind.css -o src/App.css",
     "start:css": "craco start && npm run build:css",
-    "build:css:prod": "craco build && npm run build:css"
+    "build:css:prod": "craco build && npm run build:css",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
