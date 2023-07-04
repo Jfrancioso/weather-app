@@ -1,3 +1,4 @@
+// Type definitions for Weather App
 export type optionType = {
     name: string
     country: string
