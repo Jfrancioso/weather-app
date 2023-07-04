@@ -29,6 +29,7 @@ export type ForecastItemType = {
   windSpeed: number;
   windDirection: string;
   detailedForecast: string;
+  locationTitle: string;
 };
 
 //State variables for the app
@@ -55,33 +56,41 @@ const App: React.FC = () => {
     }
   }, []);
 
-//handleSearch for weather search by address
   const handleSearch = async (address: string) => {
     try {
       setLoading(true);
-      const geocodeData = await fetchWeatherByAddress(address);
+  
+      // Extract ZIP code from the address
+      //  regular expression (/\b\d{5}(?:-\d{4})?\b/) to match the ZIP code pattern (\d{5}) with an optional hyphen and additional digits for ZIP+4 codes ((?:-\d{4})?). If a ZIP code match is found in the address, it is used for the weather search. Otherwise, an error is thrown
+      //this is used as a workaround for the geoCoding API not working properly when an address is passed in the query parameter EXAMPLE: "123 Main St, Anytown, USA"
+      const zipCodeRegex = /\b\d{5}(?:-\d{4})?(?=\D*$)/;
 
-      //check if the address is valid
-      if (geocodeData.result.addressMatches[0]) {
-        const coordinates = geocodeData.result.addressMatches[0].coordinates;
-        const forecastData = await fetchWeatherByCoordinates(coordinates);
+    const zipCodeMatch = address.match(zipCodeRegex);
+    const zipCode = zipCodeMatch ? zipCodeMatch[0] : '';
 
-        setForecast(forecastData);
-        setLoading(false);
-        setLocationTitle(address);
-        setErrorModalOpen(false);
-        setErrorMessage('');
-      } else {
-        const errorMessage = 'Address not found. Please enter a valid address. For example, you can try entering "1600 Pennsylvania Avenue NW, Washington, DC 20500" or "20500".';
-        throw new Error(errorMessage);
-      }
-    } catch (error: any) {
-      const errorMessage = error.message || 'Error occurred while fetching weather data. Please try again later.';
-      setErrorModalOpen(true);
-      setErrorMessage(errorMessage);
+    if (zipCode) {
+      // Perform weather search using the extracted ZIP code
+      const forecastData = await fetchWeatherByZIPCode(zipCode);
+      const cityStateData = await fetchCityStateByZIPCode(zipCode);
+
+      setForecast(forecastData);
       setLoading(false);
+      setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`);
+      setErrorModalOpen(false);
+      setErrorMessage('');
+    } else {
+      const errorMessage = 'Invalid address format. Please enter a valid address or ZIP code.';
+      throw new Error(errorMessage);
     }
-  };
+  } catch (error: any) {
+    const errorMessage = error.message || 'Error occurred while fetching weather data. Please try again later.';
+    setErrorModalOpen(true);
+    setErrorMessage(errorMessage);
+    setLoading(false);
+  }
+};
+  
+  
 
   //handleUseMyLocation for weather search by location
   const handleUseMyLocation = async () => {
@@ -224,7 +233,7 @@ const App: React.FC = () => {
             {selectedDay === index && (
               <div className="forecast-items">
                 {group.map((item) => (
-                  <ForecastItem key={item.number} forecastItem={item} />
+                  <ForecastItem key={item.number} forecastItem={item} locationTitle={locationTitle}/>
                 ))}
               </div>
             )}

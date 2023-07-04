@@ -5,17 +5,29 @@ const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
 const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY';
 
 
-//geocoding api to confirm full address and get coordinates
 async function fetchWeatherByAddress(address: string) {
-  const formattedAddress = address.replace(/ /g, ",");
+  const formattedAddress = encodeURIComponent(address);
   const response = await fetch(
-    `${PROXY_URL}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${encodeURIComponent(
-      formattedAddress
-    )}&benchmark=Public_AR_Current&format=json`
+    `${PROXY_URL}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=Public_AR_Current&format=json`,
+    {
+      headers: {
+        Origin: 'http://localhost:3000', // Replace with the actual origin of your application
+      },
+    }
   );
   const data = await response.json();
-  return data;
+
+  if (data.result && data.result.addressMatches && data.result.addressMatches.length > 0) {
+    const matchedAddress = data.result.addressMatches[0].matchedAddress;
+    const coordinates = data.result.addressMatches[0].coordinates;
+
+    return { formattedAddress: matchedAddress, coordinates };
+  } else {
+    throw new Error("Address not found. Please enter a valid address.");
+  }
 }
+
+
 
 //weather api to get forecast by coordinates
 async function fetchWeatherByCoordinates(coordinates: any) {

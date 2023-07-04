@@ -1,14 +1,10 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 /* Base styles */
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom right, #d9f2ff, #a7dbf7, #78c4f4);
+  background-image: linear-gradient(to bottom right, #004c66, #006080, #007499);
 }
 
 /* Default mode */
@@ -48,6 +44,26 @@ h1 {
   margin-left: -4px;
 }
 
+.location-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.location-title h1 {
+  margin-left: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
+
+.location-title svg {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+
 .location-button:hover {
   background-color: lightgray;
   cursor: pointer;
@@ -86,7 +102,6 @@ h1 {
   overflow: hidden; /* Added overflow property to hide overflowing content */
 }
 
-
 .forecast-item-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -94,14 +109,17 @@ h1 {
   font-family: 'Roboto', sans-serif;
 }
 
+p.forecast-item-temperature{
+  display: inline;
+}
+
 .forecast-item-temperature {
-  font-size: 1.2rem;
+  font-size: 3rem;
   margin-bottom: 0.5rem;
   display: inline-block;
   padding: 0.5rem;
-  border-radius: 50%;
-  border: 2px solid #000;
   text-align: center;
+  font-weight: bold;
 }
 
 .forecast-item-forecast {
@@ -121,7 +139,6 @@ h1 {
 .forecast-item-icon {
   margin-top: 0.5rem;
 }
-
 
 /* Day button styles */
 .day-button {
@@ -204,7 +221,35 @@ h1 {
 }
 
 .weather-image {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
+}
+
+/* Wind icon styles */
+.forecast-item-wind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-item-wind svg {
+  margin-right: 0.5rem;
+}
+
+.forecast-item-wind-speed {
+  text-align: center;
+}
+
+
+/* Geolocation icon styles */
+.forecast-item-location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-item-location svg {
+  margin-right: 0.5rem;
 }

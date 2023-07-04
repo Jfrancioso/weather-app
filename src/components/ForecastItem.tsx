@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faWind } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   forecastItem: {
@@ -15,9 +18,10 @@ type Props = {
     relativeHumidity: number;
     detailedForecast: string;
   };
+  locationTitle: string;
 };
 
-const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
+const ForecastItem: React.FC<Props> = ({ forecastItem, locationTitle}) => {
   const date = new Date(forecastItem.startTime).toLocaleDateString();
   const today = new Date().toLocaleDateString(); // Get the current date as a string
 
@@ -73,8 +77,10 @@ const ForecastItem: React.FC<Props> = ({ forecastItem }) => {
       'Mostly Clear then Slight Chance Showers And Thunderstorms': ['/clear-skies-sun.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
       'Mostly Cloudy then Slight Chance Showers And Thunderstorms': ['/cloudy.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
       'Slight Chance Showers And Thunderstorms then Chance Showers And Thunderstorms': ['/rain-and-thunder.gif', '/right-arrow.gif', '/rain-and-thunder.gif'],
-    
-    //not all weather shortforecast possibilities accounted for yet
+      'Showers And Thunderstorms Likely then Partly Sunny': ['/rain-and-thunder.gif', '/right-arrow.gif', '/partly-sunny.gif'],
+      'Patchy Fog then Sunny': ['/foggy.gif', '/right-arrow.gif', '/sunny.gif'],
+      'Mostly Clear then Patchy Fog': ['/clear-skies-sun.gif', '/right-arrow.gif', '/foggy.gif'],      
+      //not all weather shortforecast possibilities accounted for yet
     };
  // If the shortForecast is in the weatherImages object, return the images
  const imageSrcs = weatherImages[shortForecast];
@@ -125,6 +131,10 @@ const getStartTimeForFollowingDays = () => {
   // This function will return the forecast item as a whole
   return (
     <div className="forecast-item">
+  <div className="location-title">
+    <FontAwesomeIcon icon={faMapMarkerAlt} />
+    <h1>{locationTitle}</h1>
+  </div>
       <div className="forecast-item-inner" key={forecastItem.number}>
         <h3 className="forecast-item-title">
           {date} - {forecastItem.name}
@@ -132,13 +142,17 @@ const getStartTimeForFollowingDays = () => {
         {getCurrentTime()} {/* Display the current time if it is today's forecast */}
         {getStartTimeTonight()} {/* Display the start time if it is tonight's forecast */}
         {getStartTimeForFollowingDays()}
+        {getWeatherImages(forecastItem.shortForecast)}
         <p className="forecast-item-temperature">
           <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
         </p>
         <p className="forecast-item-forecast">{forecastItem.shortForecast}</p>
         {showDetailedForecast && <p className="forecast-item-detailed-forecast">{forecastItem.detailedForecast}</p>}
-        {getWeatherImages(forecastItem.shortForecast)}
-        <p className='forecast-item-wind-speed'>Wind Speed: {forecastItem.windSpeed}</p>
+        <div className="forecast-item-wind">
+  <FontAwesomeIcon icon={faWind} />
+  <p className="forecast-item-wind-speed">Wind Speed: {forecastItem.windSpeed}</p>
+</div>
+
         <p className='forecast-item-wind-direction'>Wind Direction: {forecastItem.windDirection}</p>
         <button onClick={toggleDetailedForecast}>
           {showDetailedForecast ? 'Hide Details' : 'Show Details'}

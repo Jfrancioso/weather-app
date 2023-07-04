@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ForecastItem from '../../components/ForecastItem';
 
-//mockup of the ForecastItem component
 describe('ForecastItem', () => {
   const mockForecastItem = {
     number: 1,
@@ -18,10 +17,10 @@ describe('ForecastItem', () => {
     relativeHumidity: 70,
     detailedForecast: 'A sunny day with clear skies.',
   };
+  const mockLocationTitle = 'Test Location';
 
-  // Test that the ForecastItem component renders correctly
   it('renders correctly', () => {
-    render(<ForecastItem forecastItem={mockForecastItem} />);
+    render(<ForecastItem forecastItem={mockForecastItem} locationTitle={mockLocationTitle} />);
     const expectedTitle = `${mockForecastItem.startTime} - ${mockForecastItem.name}`;
     const forecastItemTitle = screen.queryByText(expectedTitle);
     const forecastItemTemperature = screen.queryByText(/25\s*F/);
