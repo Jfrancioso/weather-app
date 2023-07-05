@@ -2,7 +2,7 @@
 //may need to request access to CORS Anywhere server for production
 //herokuapp for CORS may need to be updated to allow access for more requests
 const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
-const AIRNOW_API_KEY = 'YOUR_AIRNOW_API_KEY';
+const googleapis = "AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"
 
 
 async function fetchWeatherByAddress(address: string) {
@@ -86,7 +86,7 @@ async function fetchWeatherByLocation() {
 //weather api to get forecast by zip code to be used in search bar
 async function fetchWeatherByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${"AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${googleapis}`
   );
   const geocodeData = await geocodeResponse.json();
 
@@ -113,25 +113,11 @@ async function fetchWeatherByZIPCode(zipCode: string) {
   }
 }
 
-//air quality api to get air quality by coordinates **currently not in use**
-async function fetchAirQuality(latitude: number, longitude: number) {
-  const baseUrl = 'https://www.airnowapi.org/aq/observation/latLong/current/';
-  const url = `${baseUrl}?format=application/json&latitude=${latitude}&longitude=${longitude}&distance=25&API_KEY=${AIRNOW_API_KEY}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching air quality data:', error);
-    throw error;
-  }
-}
 
 //geocoding api to get city and state by zip code
 async function fetchCityStateByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${"AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${googleapis}`
   );
   const geocodeData = await geocodeResponse.json();
 
@@ -154,6 +140,5 @@ export {
   fetchWeatherByCoordinates,
   fetchWeatherByLocation,
   fetchWeatherByZIPCode,
-  fetchAirQuality,
   fetchCityStateByZIPCode,
 };
