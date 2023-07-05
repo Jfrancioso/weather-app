@@ -26,7 +26,7 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://Jfrancioso.github.io/weather-app/",
+  "homepage": "https://kind-mud-03d36bb0f.3.azurestaticapps.net/",
   "scripts": {
     "clean": "rmdir /s /q build",
     "start": "craco start",
