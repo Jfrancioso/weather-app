@@ -11,7 +11,7 @@ async function fetchWeatherByAddress(address: string) {
     `${PROXY_URL}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=Public_AR_Current&format=json`,
     {
       headers: {
-        Origin: 'http://localhost:3000', // Replace with the actual origin of your application
+        Origin: 'https://kind-mud-03d36bb0f.3.azurestaticapps.net/'
       },
     }
   );
