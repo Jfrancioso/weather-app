@@ -336,3 +336,27 @@ p.forecast-item-temperature{
     width: 100%; /* take up full width */
   }
 }
+
+/* GitHub icon styling */
+.github-link {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+}
+
+.github-link a {
+  display: inline-block;
+  text-decoration: none;
+  color: #000;
+}
+
+.github-link a:hover {
+  color: #555;
+}
+
+.github-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+}

@@ -53,7 +53,8 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
   };
 
   return (
-    <div className="search-container">
+    <div>
+      <div className="search-container">
       <input
         ref={autocompleteRef}
         className="search-bar"
@@ -62,18 +63,24 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search your address or ZIP code"
       />
-      <div className="button-container">
-        <button className="search-click" onClick={handleSearchClick}>
-          Get Forecast
-        </button>
-        <button className="location-button" onClick={handleLocationClick} disabled={isLocationBlocked}>
-          <FontAwesomeIcon icon={faMapMarkerAlt} />
-        </button>
+        <div className="button-container">
+          <button className="search-click" onClick={handleSearchClick}>
+            Get Forecast
+          </button>
+          <button className="location-button" onClick={handleLocationClick} disabled={isLocationBlocked}>
+            <FontAwesomeIcon icon={faMapMarkerAlt} />
+          </button>
+        </div>
+        {isLocationBlocked && (
+          <p>Geolocation permission has been blocked. Please enable it in your browser settings to use the "Use My Location" feature.</p>
+        )}
       </div>
-      {isLocationBlocked && (
-        <p>Geolocation permission has been blocked. Please enable it in your browser settings to use the "Use My Location" feature.</p>
-      )}
+      <div className="github-link">
+        <a href="https://github.com/Jfrancioso" target="_blank" rel="noopener noreferrer">
+          <img src="/github-sign.png" alt="GitHub Icon" className="github-icon" />
+        </a>
+      </div>
     </div>
   );
-}
+};
 export default SearchForm;
