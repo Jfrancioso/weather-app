@@ -255,7 +255,7 @@ p.forecast-item-temperature{
 }
 
 
-/* Search bar styles */
+/* Search bar styles mobile*/
 @media (max-width: 768px) {
   .search-bar {
     width: 100%;
@@ -269,17 +269,17 @@ p.forecast-item-temperature{
   }
 }
 
-/* Location button styles */
+/* Location button styles mobile*/
 @media (max-width: 768px) {
   .location-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    width: 35px;
+    height: 25px;
+    border-radius: 5px;
     transform: scaleY(1.2);
     transform-origin: top;
     text-align: center;
     font-family: 'Roboto', sans-serif;
-    margin-left: -4px;
+    margin-left: 0;
     margin-right: 0;
   }
 
@@ -303,19 +303,36 @@ p.forecast-item-temperature{
   }
 }
 
-/* Search click styles */
+/* Search click styles mobile*/
 @media (max-width: 768px) {
-  .search-click {
-    border-radius: 0;
-    transform: scaleY(1.20);
-    transform-origin: top;
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-  }
+.search-click {
+  width: 100%;
+  border-radius: 5px;
+  padding: 0.2rem;
+  margin: 0;
+  transform: scaleY(1.2);
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+}
 
-  .search-click:hover {
-    background-color: lightgray;
-    cursor: pointer;
+.search-click:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+}
+
+
+/* Button container styles */
+.button-container {
+  display: inline-flex;
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    padding: 5px;
+    position: flex;
+    bottom: 10px; /* position it below the search bar */
+    width: 100%; /* take up full width */
   }
 }

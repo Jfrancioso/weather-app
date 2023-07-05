@@ -53,7 +53,7 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
   };
 
   return (
-    <div>
+    <div className="search-container">
       <input
         ref={autocompleteRef}
         className="search-bar"
@@ -62,17 +62,18 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search your address or ZIP code"
       />
-      <button className="search-click" onClick={handleSearchClick}>
-        Get Forecast
-      </button>
-      <button className="location-button" onClick={handleLocationClick} disabled={isLocationBlocked}>
-        <FontAwesomeIcon icon={faMapMarkerAlt} />
-      </button>
+      <div className="button-container">
+        <button className="search-click" onClick={handleSearchClick}>
+          Get Forecast
+        </button>
+        <button className="location-button" onClick={handleLocationClick} disabled={isLocationBlocked}>
+          <FontAwesomeIcon icon={faMapMarkerAlt} />
+        </button>
+      </div>
       {isLocationBlocked && (
         <p>Geolocation permission has been blocked. Please enable it in your browser settings to use the "Use My Location" feature.</p>
       )}
     </div>
   );
-};
-
+}
 export default SearchForm;
