@@ -340,8 +340,9 @@ p.forecast-item-temperature{
 /* GitHub icon styling */
 .github-link {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
+  z-index: 9999; /* Higher z-index to ensure it appears above other elements */
   text-align: center;
 }
 
