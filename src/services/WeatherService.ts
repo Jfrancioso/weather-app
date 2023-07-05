@@ -86,7 +86,7 @@ async function fetchWeatherByLocation() {
 //weather api to get forecast by zip code to be used in search bar
 async function fetchWeatherByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${process.env.REACT_APP_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${"AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"}`
   );
   const geocodeData = await geocodeResponse.json();
 
@@ -131,7 +131,7 @@ async function fetchAirQuality(latitude: number, longitude: number) {
 //geocoding api to get city and state by zip code
 async function fetchCityStateByZIPCode(zipCode: string) {
   const geocodeResponse = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${process.env.REACT_APP_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(zipCode)}&key=${"AIzaSyAE-rDctKIbGthA7t9GDdbplxMxP-3S3WM"}`
   );
   const geocodeData = await geocodeResponse.json();
 
