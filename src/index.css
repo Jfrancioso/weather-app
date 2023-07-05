@@ -253,3 +253,69 @@ p.forecast-item-temperature{
 .forecast-item-location svg {
   margin-right: 0.5rem;
 }
+
+
+/* Search bar styles */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 100%;
+    border-radius: 20px;
+    padding: 0.5rem;
+    margin: 0;
+    transform: scaleY(1.2);
+    transform-origin: top;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+/* Location button styles */
+@media (max-width: 768px) {
+  .location-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transform: scaleY(1.2);
+    transform-origin: top;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    margin-left: -4px;
+    margin-right: 0;
+  }
+
+  .location-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+  }
+
+  .location-title h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .location-title svg {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+}
+
+/* Search click styles */
+@media (max-width: 768px) {
+  .search-click {
+    border-radius: 0;
+    transform: scaleY(1.20);
+    transform-origin: top;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+  }
+
+  .search-click:hover {
+    background-color: lightgray;
+    cursor: pointer;
+  }
+}
