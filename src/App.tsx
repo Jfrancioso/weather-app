@@ -36,7 +36,6 @@ const App: React.FC = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [locationTitle, setLocationTitle] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(0); // Set 0 as the default selected day
 
   //useEffect hook to check if geolocation is supported by the browser
@@ -159,11 +158,6 @@ const App: React.FC = () => {
   //groupedForecast for grouping the forecast
   const groupedForecast = groupForecastByDay(forecast);
 
-  // //toggleDarkMode for toggling the dark mode **currently not in use**
-  // const toggleDarkMode = () => {
-  //   setDarkMode((prevDarkMode) => !prevDarkMode);
-  // };
-
   //handleDayClick for handling the day click
   const handleDayClick = (dayIndex: number) => {
     if (selectedDay === dayIndex) {
@@ -197,12 +191,6 @@ const App: React.FC = () => {
 
   //return for the app
   return (
-    // <div className={darkMode ? 'dark-mode' : ''}>
-    //   <div className="dark-mode-toggle">
-    //     <button onClick={toggleDarkMode}>
-    //       {darkMode ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
-    //     </button>
-    //   </div>
       <main>
         <h1>
           Your Weather <span>Forecast</span>
