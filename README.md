@@ -1,5 +1,5 @@
 **Weather App**
-A weather forecast application built with JSX, TSX, and React.
+A weather forecast application built with TSX and React.
 
 ## Installation
 To run the Weather App locally, follow these steps:
@@ -26,28 +26,19 @@ npm install
 </code>
 </pre>
 
-## 3. Install the following additional dependencies:
-- `react`: JavaScript library for building user interfaces.
-- `react-dom`: Package providing DOM-specific methods for React.
-- `craco`: Configuration tool for Create React App.
-
-You can install these dependencies using the following command:
-
-cd weather-app
-npm install
-
-## 4. Start the application:
+## 3. Start the application:
 <pre>
 <code>
 npm run start
 </code>
 </pre>
 The app will be running at http://localhost:3000.
+You can also access this application at http://kind-mud-03d36bb0f.3.azurestaticapps.net
 
 ## Usage
 - Enter an address in the search box to get the weather forecast for that location.
 - Click the "Get Forecast" button to retrieve the forecast.
-- To use your current location, click the "Use My Location (Geolocation Icon)" button. Make sure to grant permission for location access when prompted.
+- To use your current location, click the "Geolocation Icon" button. Make sure to grant permission for location access when prompted.
 
 **APIs Used**
 This application utilizes the following APIs:
@@ -56,10 +47,6 @@ This application utilizes the following APIs:
 - Weather API: Provides weather forecast data based on the coordinates of a location.
 - Air Quality API: Retrieves current air quality information based on latitude and longitude coordinates. **Currently Not in Use**
 - Google API: Used for AutoLoading addresses through a drop-down search bar.
-
-Make sure to replace the placeholder text with the actual names and descriptions of the APIs you are using. Additionally, if you have any specific instructions or requirements for obtaining API keys or credentials, you can mention them in this section as well.
-
-Including this information helps users and contributors understand the external services your application relies on and facilitates their interaction with your project.
 
 ## Contributing
 
