@@ -25,33 +25,18 @@ cd weather-app
 npm install
 </code>
 </pre>
-<pre>
-<code>
-npm install react react-dom craco --save
-</code>
-</pre>
 
 ## 3. Install the following additional dependencies:
 - `react`: JavaScript library for building user interfaces.
 - `react-dom`: Package providing DOM-specific methods for React.
-- `tailwindcss`: Utility-first CSS framework for styling.
 - `craco`: Configuration tool for Create React App.
 
 You can install these dependencies using the following command:
 
 cd weather-app
 npm install
-npm install react react-dom tailwindcss craco --save
 
-
-## 4. Create a `tailwind.config.js` file in the project root by running the following command:
-
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-
-## 5. Start the application:
+## 4. Start the application:
 <pre>
 <code>
 npm run start
