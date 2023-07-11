@@ -13,11 +13,6 @@ body {
   background-color: white;
 }
 
-/* Dark mode */
-body.dark-mode {
-  color: white;
-  background-color: black;
-}
 
 /* Search bar styles */
 .search-bar {
