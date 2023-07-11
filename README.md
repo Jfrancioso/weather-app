@@ -1,5 +1,5 @@
 **Weather App**
-A weather forecast application built with TSX, and React.
+A weather forecast application built with TSX and React.
 
 ## Installation
 To run the Weather App locally, follow these steps:
@@ -32,7 +32,8 @@ npm install
 npm run start
 </code>
 </pre>
-The app will be running at http://localhost:3000. You can also access this application at http://kind-mud-03d36bb0f.3.azurestaticapps.net
+The app will be running at http://localhost:3000.
+You can also access this application at http://kind-mud-03d36bb0f.3.azurestaticapps.net
 
 ## Usage
 - Enter an address in the search box to get the weather forecast for that location.
