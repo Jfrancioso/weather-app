@@ -13,6 +13,14 @@ body {
   background-color: white;
 }
 
+/*num of days label*/
+.num-of-days-label {
+  margin: 5px;
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
 
 /* Search bar styles */
 .search-bar {

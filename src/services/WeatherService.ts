@@ -23,7 +23,7 @@ async function fetchWeatherByAddress(address: string) {
 
     return { formattedAddress: matchedAddress, coordinates };
   } else {
-    throw new Error("Address not found. Please enter a valid address.");
+    throw new Error("Invalid address format. Please enter a valid address or ZIP code.");
   }
 }
 
