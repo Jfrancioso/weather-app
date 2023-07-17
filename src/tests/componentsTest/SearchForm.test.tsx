@@ -8,6 +8,7 @@ describe('SearchForm', () => {
   const mockOnUseMyLocation = jest.fn();
   const mockIsLocationBlocked = false;
   const mockOnChangeNumOfDays = jest.fn();
+  const mockSetErrorModalOpen = jest.fn();
 
   // Test that the SearchForm component renders correctly
   it('handles search by ZIP code', () => {
@@ -17,7 +18,9 @@ describe('SearchForm', () => {
         onSearch={mockOnSearch}
         onUseMyLocation={mockOnUseMyLocation}
         isLocationBlocked={mockIsLocationBlocked}
-        onchangeNumOfDays={mockOnChangeNumOfDays} // Change prop name to onchangeNumOfDays
+        onChangeNumOfDays={mockOnChangeNumOfDays} // Change prop name to onchangeNumOfDays
+        errorMessage=''
+        setErrorModalOpen={mockSetErrorModalOpen} // Change prop name to setErrorModalOpen
       />
     );
 

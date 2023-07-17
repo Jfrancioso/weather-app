@@ -96,10 +96,10 @@ const ForecastItem: React.FC<Props> = ({ forecastItem, locationTitle}) => {
  return null;
 };
 
-// This function will toggle the detailed forecast
 const toggleDetailedForecast = () => {
- setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
+  setShowDetailedForecast((prevShowDetailedForecast) => !prevShowDetailedForecast);
 };
+
 
 // This function checks if it is today's forecast and returns the current time
 const getCurrentTime = () => {
@@ -128,14 +128,17 @@ const getStartTimeForFollowingDays = () => {
   };
 
 
-  // This function will return the forecast item as a whole
-  return (
+   // This function renders the forecast item component
+   return (
     <div className="forecast-item">
-  <div className="location-title">
-    <FontAwesomeIcon icon={faMapMarkerAlt} />
-    <h1>{locationTitle}</h1>
-  </div>
-      <div className="forecast-item-inner" key={forecastItem.number}>
+      <div className="location-title">
+        <FontAwesomeIcon icon={faMapMarkerAlt} />
+        <h1>{locationTitle}</h1>
+      </div>
+      <div
+        className={`forecast-item-inner ${showDetailedForecast ? 'show-details' : ''}`}
+        key={forecastItem.number}
+      >
         <h3 className="forecast-item-title">
           {date} - {forecastItem.name}
         </h3>
@@ -144,16 +147,20 @@ const getStartTimeForFollowingDays = () => {
         {getStartTimeForFollowingDays()}
         {getWeatherImages(forecastItem.shortForecast)}
         <p className="forecast-item-temperature">
-          <span className="temperature-circle">{forecastItem.temperature}</span> {forecastItem.temperatureUnit}
+          <span className="temperature-circle">{forecastItem.temperature}</span>{' '}
+          {forecastItem.temperatureUnit}
         </p>
         <p className="forecast-item-forecast">{forecastItem.shortForecast}</p>
-        {showDetailedForecast && <p className="forecast-item-detailed-forecast">{forecastItem.detailedForecast}</p>}
+        {showDetailedForecast && (
+          <p className="forecast-item-detailed-forecast">{forecastItem.detailedForecast}</p>
+        )}
         <div className="forecast-item-wind">
-  <FontAwesomeIcon icon={faWind} />
-  <p className="forecast-item-wind-speed">Wind Speed: {forecastItem.windSpeed}</p>
-</div>
-
-        <p className='forecast-item-wind-direction'>Wind Direction: {forecastItem.windDirection}</p>
+          <FontAwesomeIcon icon={faWind} />
+          <p className="forecast-item-wind-speed">Wind Speed: {forecastItem.windSpeed}</p>
+        </div>
+        <p className="forecast-item-wind-direction">
+          Wind Direction: {forecastItem.windDirection}
+        </p>
         <button onClick={toggleDetailedForecast}>
           {showDetailedForecast ? 'Hide Details' : 'Show Details'}
         </button>

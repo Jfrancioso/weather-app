@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
@@ -9,13 +8,23 @@ type Props = {
   onUseMyLocation: (numOfDays: number) => void;
   isLocationBlocked: boolean;
   onSearchByZIPCode: (zipCode: string, numOfDays: number) => void;
-  onchangeNumOfDays: (value: number) => void;
+  onChangeNumOfDays: (value: number) => void;
+  errorMessage: string;
+  setErrorModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked, onSearchByZIPCode, onchangeNumOfDays }) => {
+const SearchForm: React.FC<Props> = ({
+  onSearch,
+  onUseMyLocation,
+  isLocationBlocked,
+  onSearchByZIPCode,
+  onChangeNumOfDays,
+  errorMessage,
+  setErrorModalOpen,
+}) => {
   const [query, setQuery] = useState('');
   const [numOfDays, setNumOfDays] = useState<number | undefined>(undefined);
-  const [locationTitle, setLocationTitle] = useState('');
+  const [error, setError] = useState(errorMessage);
 
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
 
@@ -36,23 +45,6 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
         const selectedPlace = autocomplete.getPlace();
         if (selectedPlace && selectedPlace.formatted_address) {
           setQuery(selectedPlace.formatted_address);
-
-          // Extract city and state from address components
-          const addressComponents = selectedPlace.address_components;
-          let city = '';
-          let state = '';
-          for (const component of addressComponents as google.maps.GeocoderAddressComponent[]) {
-            const types = component.types;
-            if (types.includes('locality')) {
-              city = component.long_name;
-            }
-            if (types.includes('administrative_area_level_1')) {
-              state = component.short_name;
-            }
-          }
-
-          // Set the location title with city and state
-          setLocationTitle(`${city}, ${state}`);
         }
       });
     });
@@ -70,6 +62,27 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
     onUseMyLocation(numOfDays || 7);
   };
 
+  const handleChangeNumOfDays = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const symbolRegex = /[^0-9]/g; // Regular expression to match any non-digit character
+  
+    if (value === '') {
+      setNumOfDays(undefined);
+      setError('');
+    } else if (symbolRegex.test(value)) {
+      setError('Invalid input. Please enter a number between 1 and 7.');
+    } else {
+      const parsedValue = Number(value);
+      if (parsedValue < 1 || parsedValue > 7) {
+        setError('Please enter a number between 1 and 7 for the number of days forecast.');
+      } else {
+        setNumOfDays(parsedValue);
+        setError('');
+      }
+    }
+  };
+  
+
   return (
     <div>
       <div className="search-container">
@@ -81,11 +94,13 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search your address or ZIP code"
         />
-        <label className='num-of-days-label' htmlFor="num-of-days">Number of Days</label>
+        <label className="num-of-days-label" htmlFor="num-of-days">
+          Number of Days (1-7)
+        </label>
         <input
           type="number"
           value={numOfDays !== undefined ? numOfDays.toString() : ''}
-          onChange={(e) => setNumOfDays(Number(e.target.value))}
+          onChange={handleChangeNumOfDays}
           min={1}
           max={7}
           className="num-of-days"
@@ -106,13 +121,13 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
             Location" feature.
           </p>
         )}
+        {error && <p className="error-message">{error}</p>}
       </div>
       <div className="github-link">
         <a href="https://github.com/Jfrancioso" target="_blank" rel="noopener noreferrer">
           <img src="/github-sign.png" alt="GitHub Icon" className="github-icon" />
         </a>
       </div>
-      {/* {locationTitle && <h2>{locationTitle}</h2>} */}
     </div>
   );
 };

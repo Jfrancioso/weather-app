@@ -9,7 +9,6 @@ import {
 } from './services/WeatherService';
 import './index.css';
 
-// Type definition for the forecast item
 export type ForecastItemType = {
   number: number;
   name: string;
@@ -27,7 +26,11 @@ export type ForecastItemType = {
   locationTitle: string;
 };
 
-// State variables for the app
+type CityStateData = {
+  city: string;
+  state: string;
+};
+
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [forecast, setForecast] = useState<ForecastItemType[] | null>(null);
@@ -35,16 +38,13 @@ const App: React.FC = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [locationTitle, setLocationTitle] = useState('');
-  const [selectedDay, setSelectedDay] = useState<number | null>(0); // Set 0 as the default selected day
-  const [numOfDays, setNumOfDays] = useState<number>(7); // Default to 7 days
+  const [selectedDay, setSelectedDay] = useState<number | null>(0);
+  const [numOfDays, setNumOfDays] = useState<number>(7);
 
-  // useEffect hook to check if geolocation is supported by the browser
   useEffect(() => {
-    // Check if geolocation is supported by the browser
     if (!navigator.geolocation) {
       console.warn("Geolocation is not supported by your browser. The 'Use My Location' feature may not work.");
     } else {
-      // Query the permission status
       navigator.permissions?.query({ name: 'geolocation' }).then((result) => {
         setGeolocationBlocked(result.state === 'denied');
       });
@@ -54,7 +54,7 @@ const App: React.FC = () => {
   const handleSearch = async (address: string, numOfDays: number) => {
     try {
       setLoading(true);
-  
+
       const validUSStates = [
         'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS',
         'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY',
@@ -62,24 +62,20 @@ const App: React.FC = () => {
         'WI', 'WY'
       ];
 
-      // multiply the numOfDays by 2
       const multipliedNumOfDays = numOfDays * 2;
-  
-      // Extract ZIP code from the address
+
       const zipCodeRegex = /\b\d{5}(?:-\d{4})?(?=\D*$)/;
       const zipCodeMatch = address.match(zipCodeRegex);
       const zipCode = zipCodeMatch ? zipCodeMatch[0] : '';
-  
+
       if (zipCode) {
-        // Perform weather search using the extracted ZIP code
         const forecastData = await fetchWeatherByZIPCode(zipCode);
         const cityStateData = await fetchCityStateByZIPCode(zipCode);
 
         if (!validUSStates.includes(cityStateData.state)) {
           throw new Error('Invalid address. Please enter a valid address within the United States.');
         }
-        
-  
+
         setForecast(forecastData.slice(0, multipliedNumOfDays));
         setLoading(false);
         setLocationTitle(cityStateData.city ? `${cityStateData.city}, ${cityStateData.state}` : address);
@@ -97,18 +93,17 @@ const App: React.FC = () => {
     }
   };
 
-  // handleUseMyLocation for weather search by location
   const handleUseMyLocation = async () => {
     try {
       setLoading(true);
       const forecastData = (await fetchWeatherByLocation()) as ForecastItemType[];
       const processedForecastData = forecastData.map((item) => ({
         ...item,
-        wind: item.windSpeed, // Set wind speed
+        wind: item.windSpeed,
       }));
       setForecast(processedForecastData);
       setLoading(false);
-      setLocationTitle('Your Current Location'); // Update the location title
+      setLocationTitle('Your Current Location');
       setErrorModalOpen(false);
       setErrorMessage('');
     } catch (error) {
@@ -117,25 +112,23 @@ const App: React.FC = () => {
     }
   };
 
-  // handleSearchByZIPCode for weather search by zip code
-const handleSearchByZIPCode = async (zipCode: string) => {
-  try {
-    setLoading(true);
-    const forecastData = await fetchWeatherByZIPCode(zipCode);
-    const cityStateData = await fetchCityStateByZIPCode(zipCode); // Function to fetch city and state data
+  const handleSearchByZIPCode = async (zipCode: string) => {
+    try {
+      setLoading(true);
+      const forecastData = await fetchWeatherByZIPCode(zipCode);
+      const cityStateData = await fetchCityStateByZIPCode(zipCode);
 
-    setForecast(forecastData);
-    setLoading(false);
-    setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`); // Update the location title with city and state
-    setErrorModalOpen(false);
-    setErrorMessage('');
-  } catch (error) {
-    console.error(error);
-    setLoading(false);
-  }
-};
+      setForecast(forecastData);
+      setLoading(false);
+      setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`);
+      setErrorModalOpen(false);
+      setErrorMessage('');
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
-  // closeModal for closing the error modal
   const closeModal = () => {
     setErrorModalOpen(false);
     setErrorMessage('');
@@ -162,33 +155,29 @@ const handleSearchByZIPCode = async (zipCode: string) => {
       groupedData.push(currentGroup);
     }
 
-    // Return only the selected number of days
     return groupedData.slice(0, numOfDays);
   };
 
-  // groupedForecast for grouping the forecast
   const groupedForecast = groupForecastByDay(forecast);
 
-  // handleDayClick for handling the day click
   const handleDayClick = (dayIndex: number) => {
     if (selectedDay === dayIndex) {
-      setSelectedDay(null); // Deselect the day if it's already selected
+      setSelectedDay(null);
     } else {
-      setSelectedDay(dayIndex); // Select the day
+      setSelectedDay(dayIndex);
     }
   };
 
-  // function to get the label for a day
   const getDayLabel = (dayIndex: number): string => {
     if (!forecast || forecast.length === 0) {
-      return ''; // Return an empty string or handle the case when forecast is null or empty
+      return '';
     }
 
     if (dayIndex === 0) {
       return 'Today';
     } else {
       const today = new Date();
-      const date = new Date(forecast[0].startTime); // Assuming the first forecast is for the current day
+      const date = new Date(forecast[0].startTime);
       date.setDate(date.getDate() + dayIndex);
       if (date.getDate() === today.getDate()) {
         return 'Today';
@@ -199,48 +188,57 @@ const handleSearchByZIPCode = async (zipCode: string) => {
     }
   };
 
-  // handleChangeNumOfDays for handling the number of days input change
   const handleChangeNumOfDays = (value: number) => {
-    setNumOfDays(value);
+    if (value < 1 || value > 7) {
+      const errorMessage = 'Invalid number of days. Please enter a number between 1 and 7.';
+      setErrorModalOpen(true);
+      setErrorMessage(errorMessage);
+    } else {
+      setNumOfDays(value);
+      setErrorMessage('');
+      setErrorModalOpen(false);
+    }
   };
 
-  // Return for the app
   return (
     <main>
-      <h1>
-        Your Weather <span>Forecast </span>
+      <h1 className="Your-Weather-Forecast-Title">
+        Your Weather <span>Forecast</span>
       </h1>
       <h3>United States Only</h3>
       <SearchForm
-  onSearchByZIPCode={handleSearchByZIPCode}
-  onSearch={handleSearch}
-  onUseMyLocation={handleUseMyLocation}
-  isLocationBlocked={geolocationBlocked}
-  onchangeNumOfDays={handleChangeNumOfDays}
-/>
+        onSearchByZIPCode={handleSearchByZIPCode}
+        onSearch={handleSearch}
+        onUseMyLocation={handleUseMyLocation}
+        isLocationBlocked={geolocationBlocked}
+        onChangeNumOfDays={handleChangeNumOfDays}
+        errorMessage={errorMessage}
+        setErrorModalOpen={setErrorModalOpen}
+      />
 
-      {errorModalOpen && <ErrorModal onClose={closeModal} errorMessage={errorMessage} />}
+      {errorModalOpen && <ErrorModal errorMessage={errorMessage} onClose={closeModal} />}
       {locationTitle && <h2>{locationTitle}</h2>}
       {loading && <p>Loading...</p>}
 
-      {groupedForecast.map((group, index) => (
-        <div key={index}>
-          <button
-            className={`day-button ${selectedDay === index ? 'active' : ''}`}
-            onClick={() => handleDayClick(index)}
-            style={{ backgroundColor: selectedDay === index ? 'green' : '' }}
-          >
-            {getDayLabel(index)}
-          </button>
-          {selectedDay === index && (
-            <div className="forecast-items">
-              {group.map((item) => (
-                <ForecastItem key={item.number} forecastItem={item} locationTitle={locationTitle} />
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+      <div className="forecast-container">
+        {groupedForecast.map((group, index) => (
+          <div key={index} className="forecast-day">
+            <button
+              className={`day-button ${selectedDay === index ? 'active' : ''}`}
+              onClick={() => handleDayClick(index)}
+            >
+              {getDayLabel(index)}
+            </button>
+            {selectedDay === index && (
+              <div className="forecast-items">
+                {group.map((item) => (
+                  <ForecastItem key={item.number} forecastItem={item} locationTitle={locationTitle} />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </main>
   );
 };
