@@ -197,8 +197,9 @@ const App: React.FC = () => {
   return (
     <main>
       <h1>
-        Your Weather <span>Forecast</span>
+        Your Weather <span>Forecast </span>
       </h1>
+      <h3>United States Only</h3>
       <SearchForm
   onSearchByZIPCode={handleSearchByZIPCode}
   onSearch={handleSearch}

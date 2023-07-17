@@ -13,7 +13,7 @@ type Props = {
 
 const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked, onSearchByZIPCode, onchangeNumOfDays }) => {
   const [query, setQuery] = useState('');
-  const [numOfDays, setNumOfDays] = useState<number>(7);
+  const [numOfDays, setNumOfDays] = useState<number | undefined>(undefined);
 
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
 
@@ -41,20 +41,16 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
     });
   }, []);
 
+  const handleSearchClick = () => {
+    if (query.length === 5 && /^\d+$/.test(query)) {
+      onSearchByZIPCode(query, numOfDays || 7);
+    } else {
+      onSearch(query, numOfDays || 7);
+    }
+  };
 
-  // Handle the search button click
-const handleSearchClick = () => {
-  if (query.length === 5 && /^\d+$/.test(query)) {
-    onSearchByZIPCode(query, numOfDays);
-  } else {
-    onSearch(query, numOfDays);
-  }
-};
-
-
-  // Handle the "Use My Location" button click
   const handleLocationClick = () => {
-    onUseMyLocation(numOfDays);
+    onUseMyLocation(numOfDays || 7);
   };
 
   return (
@@ -71,7 +67,7 @@ const handleSearchClick = () => {
         <label className='num-of-days-label' htmlFor="num-of-days">Number of Days</label>
         <input
           type="number"
-          value={numOfDays}
+          value={numOfDays !== undefined ? numOfDays.toString() : ''}
           onChange={(e) => setNumOfDays(Number(e.target.value))}
           min={1}
           max={7}
