@@ -55,6 +55,13 @@ const App: React.FC = () => {
     try {
       setLoading(true);
   
+      const validUSStates = [
+        'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS',
+        'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY',
+        'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV',
+        'WI', 'WY'
+      ];
+
       // multiply the numOfDays by 2
       const multipliedNumOfDays = numOfDays * 2;
   
@@ -67,6 +74,11 @@ const App: React.FC = () => {
         // Perform weather search using the extracted ZIP code
         const forecastData = await fetchWeatherByZIPCode(zipCode);
         const cityStateData = await fetchCityStateByZIPCode(zipCode);
+
+        if (!validUSStates.includes(cityStateData.state)) {
+          throw new Error('Invalid address. Please enter a valid address within the United States.');
+        }
+        
   
         setForecast(forecastData.slice(0, multipliedNumOfDays));
         setLoading(false);
@@ -74,7 +86,7 @@ const App: React.FC = () => {
         setErrorModalOpen(false);
         setErrorMessage('');
       } else {
-        const errorMessage = 'Invalid address format. Please enter a valid address or ZIP code.';
+        const errorMessage = 'Invalid address format. Please enter a valid address or ZIP code within the United States.';
         throw new Error(errorMessage);
       }
     } catch (error: any) {

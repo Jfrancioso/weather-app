@@ -88,7 +88,7 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
           min={1}
           max={7}
           className="num-of-days"
-          placeholder="Enter number of days"
+          placeholder="0"
         />
 
         <div className="button-container">
