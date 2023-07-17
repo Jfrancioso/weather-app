@@ -26,10 +26,6 @@ export type ForecastItemType = {
   locationTitle: string;
 };
 
-type CityStateData = {
-  city: string;
-  state: string;
-};
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
