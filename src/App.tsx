@@ -205,7 +205,7 @@ const App: React.FC = () => {
       <h1 className="Your-Weather-Forecast-Title">
         Your Weather <span>Forecast</span>
       </h1>
-      <h3>United States Only</h3>
+      <h3>United States</h3>
       <SearchForm
         onSearchByZIPCode={handleSearchByZIPCode}
         onSearch={handleSearch}
