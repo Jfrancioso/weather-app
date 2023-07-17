@@ -54,8 +54,8 @@ const App: React.FC = () => {
   const handleSearch = async (address: string, numOfDays: number) => {
     try {
       setLoading(true);
-
-      //multiply the numOfDays by 2
+  
+      // multiply the numOfDays by 2
       const multipliedNumOfDays = numOfDays * 2;
   
       // Extract ZIP code from the address
@@ -70,7 +70,7 @@ const App: React.FC = () => {
   
         setForecast(forecastData.slice(0, multipliedNumOfDays));
         setLoading(false);
-        setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`);
+        setLocationTitle(cityStateData.city ? `${cityStateData.city}, ${cityStateData.state}` : address);
         setErrorModalOpen(false);
         setErrorMessage('');
       } else {
@@ -84,7 +84,6 @@ const App: React.FC = () => {
       setLoading(false);
     }
   };
-  
 
   // handleUseMyLocation for weather search by location
   const handleUseMyLocation = async () => {
@@ -107,22 +106,22 @@ const App: React.FC = () => {
   };
 
   // handleSearchByZIPCode for weather search by zip code
-  const handleSearchByZIPCode = async (zipCode: string) => {
-    try {
-      setLoading(true);
-      const forecastData = await fetchWeatherByZIPCode(zipCode);
-      const cityStateData = await fetchCityStateByZIPCode(zipCode); // Function to fetch city and state data
+const handleSearchByZIPCode = async (zipCode: string) => {
+  try {
+    setLoading(true);
+    const forecastData = await fetchWeatherByZIPCode(zipCode);
+    const cityStateData = await fetchCityStateByZIPCode(zipCode); // Function to fetch city and state data
 
-      setForecast(forecastData);
-      setLoading(false);
-      setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`); // Update the location title with city and state
-      setErrorModalOpen(false);
-      setErrorMessage('');
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
+    setForecast(forecastData);
+    setLoading(false);
+    setLocationTitle(`${cityStateData.city}, ${cityStateData.state}`); // Update the location title with city and state
+    setErrorModalOpen(false);
+    setErrorMessage('');
+  } catch (error) {
+    console.error(error);
+    setLoading(false);
+  }
+};
 
   // closeModal for closing the error modal
   const closeModal = () => {

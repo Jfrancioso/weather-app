@@ -14,6 +14,7 @@ type Props = {
 const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBlocked, onSearchByZIPCode, onchangeNumOfDays }) => {
   const [query, setQuery] = useState('');
   const [numOfDays, setNumOfDays] = useState<number | undefined>(undefined);
+  const [locationTitle, setLocationTitle] = useState('');
 
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
 
@@ -27,15 +28,30 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
 
     // Initialize the Google Maps autocomplete
     loader.load().then(() => {
-      const autocomplete = new google.maps.places.Autocomplete(autocompleteRef.current!, {
-        types: ['geocode'], // Restrict to addresses only
-      });
+      const autocomplete = new google.maps.places.Autocomplete(autocompleteRef.current!);
 
       // When the user selects an address from the dropdown, update the query state
       autocomplete.addListener('place_changed', () => {
         const selectedPlace = autocomplete.getPlace();
         if (selectedPlace && selectedPlace.formatted_address) {
           setQuery(selectedPlace.formatted_address);
+
+          // Extract city and state from address components
+          const addressComponents = selectedPlace.address_components;
+          let city = '';
+          let state = '';
+          for (const component of addressComponents as google.maps.GeocoderAddressComponent[]) {
+            const types = component.types;
+            if (types.includes('locality')) {
+              city = component.long_name;
+            }
+            if (types.includes('administrative_area_level_1')) {
+              state = component.short_name;
+            }
+          }
+
+          // Set the location title with city and state
+          setLocationTitle(`${city}, ${state}`);
         }
       });
     });
@@ -95,6 +111,7 @@ const SearchForm: React.FC<Props> = ({ onSearch, onUseMyLocation, isLocationBloc
           <img src="/github-sign.png" alt="GitHub Icon" className="github-icon" />
         </a>
       </div>
+      {/* {locationTitle && <h2>{locationTitle}</h2>} */}
     </div>
   );
 };

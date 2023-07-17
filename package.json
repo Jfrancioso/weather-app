@@ -19,6 +19,7 @@
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-autocomplete": "^2.7.3",
     "react-scripts": "5.0.1",
     "react-svg": "^16.1.18",
     "requests": "^0.3.0",
